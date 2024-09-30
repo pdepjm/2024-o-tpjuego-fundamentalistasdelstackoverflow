@@ -4,9 +4,9 @@ import morcilla.*
 
 program MorcillaGame {
 	game.title("La Bizarra Aventura de MORCILLA")
-	game.height(10)
-	game.width(10)
-	game.cellSize(100)
+	game.height(32)
+	game.width(32)
+	game.cellSize(256)
 
 	game.addVisual(morcilla)
 
