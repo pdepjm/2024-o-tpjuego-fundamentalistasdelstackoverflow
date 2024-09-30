@@ -3,7 +3,7 @@ object morcilla {
 
   method image() = "morcilla.png"
 
-  method caminar(pasos) {
+  method caminarDerecha(pasos) {
     position.goRight(pasos)
   }
 

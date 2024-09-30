@@ -6,11 +6,11 @@ program MorcillaGame {
 	game.title("La Bizarra Aventura de MORCILLA")
 	game.height(32)
 	game.width(32)
-	game.cellSize(256)
+	game.cellSize(64)
 
 	game.addVisual(morcilla)
 
-    keyboard.d().onPressDo({ morcilla.caminar(1) })
+    keyboard.d().onPressDo({ morcilla.caminarDerecha(1) })
 
 	game.start()
 }
