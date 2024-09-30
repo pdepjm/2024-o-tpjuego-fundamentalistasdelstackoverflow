@@ -1,16 +1,16 @@
 import wollok.game.*
 
-import pepita.*
+import morcilla.*
 
-program PepitaGame {
-	game.title("Pepita")
+program MorcillaGame {
+	game.title("La Bizarra Aventura de MORCILLA")
 	game.height(10)
 	game.width(10)
 	game.cellSize(100)
 
-	game.addVisual(pepita)
+	game.addVisual(morcilla)
 
-	keyboard.w().onPressDo({ pepita.fly(1) })
+    keyboard.d().onPressDo({ morcilla.caminar(1) })
 
 	game.start()
 }
