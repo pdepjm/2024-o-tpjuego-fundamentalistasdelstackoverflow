@@ -1,11 +1,27 @@
 import wollok.game.*
 import morcilla.*
+import general.*
+
+object entorno {
+    method limpiarEntorno() {
+        game.allVisuals().forEach({visible => game.removeVisual(visible)})
+    }
+}
 
 // =============================================== COLISIONES ===============================================
 class Colisiones {
-    const property position
-
+    var property position
     method image() = "celda_gris.png"
+}
+
+class Proyectiles inherits Colisiones {
+    method direccionIzquierda(velocidad) {
+        game.onTick(velocidad, "proyectilIzquierda", {position.x((position.x()-1))})
+    }
+    
+    method direccionDerecha(velocidad) {
+        game.onTick(velocidad, "proyectilDerecha", {position.goRight(1)})
+    }
 }
 
 const colision0 = new Colisiones(position = new Position(x=0, y=1))
@@ -17,7 +33,7 @@ class Visual {
     const property image
 }
 
-const cartelAtaque = new Visual (position = new Position(x=17, y=20), image = "celda_gris.png")
+const cartelAtaque = new Visual (position = new Position(x=17, y=20), image = "proto_cartel_ataque.png")
 
 
 // =============================================== BOSSFIGHTS ===============================================
@@ -26,6 +42,12 @@ class BossFight {
     
     method iniciarPelea() {
         game.boardGround("arena_de_jefe.png")
+        entorno.limpiarEntorno()
+        game.addVisual(morcilla)
+
+        jefe.posicionBatalla()
+        game.addVisual(jefe)
+
         self.habilitarAtaque()
     }
 
@@ -67,16 +89,38 @@ const bossFightDePrueba = new BossFight(jefe = jefeDePrueba)
 
 // =============================================== JEFES ===============================================
 class JefeInteractuable{
-    const property position
+    var property position
     const property image
     var property vida = 3
+
+    method posicionBatalla() {
+        position = game.center()
+    }
 
     method disminuirVida(){
         vida = (vida - 1).max(0)
     }
-    method ataque(){
+    
+}
+
+class JefeDePrueba inherits JefeInteractuable { 
+    method ataque() {
+        const opcion = (0.randomUpTo(2)).roundUp()
+        
+        if(opcion == 1)
+            self.ataque1()
+        else if(opcion == 2)
+            self.ataque2()
+
+    }
+
+    method ataque1() {
+        new 
+    }
+
+    method ataque2() {
         
     }
 }
 
-const jefeDePrueba = new JefeInteractuable(position = new Position(x=30, y=2), image = "celda_roja.png")
+const jefeDePrueba = new JefeDePrueba (position = new Position(x=30, y=2), image = "celda_roja.png")

@@ -1,4 +1,5 @@
 import wollok.game.*
+import general.*
 
 object morcilla {
   var property position = new MutablePosition(x=0, y=2)

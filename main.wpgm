@@ -19,8 +19,6 @@ program MorcillaGame {
 	keyboard.a().onPressDo({ morcilla.caminarIzquierda(1) })
 	keyboard.space().onPressDo({ morcilla.saltar(1000) })
 
-	keyboard.l().onPressDo({ game.removeVisual("stock_fondo.jpg") })
-
 	keyboard.j().onPressDo({ bossFightDePrueba.iniciarPelea() })
 
 	game.whenCollideDo(morcilla, {jefe => game.say(jefeDePrueba, "Estas colisionando")})
