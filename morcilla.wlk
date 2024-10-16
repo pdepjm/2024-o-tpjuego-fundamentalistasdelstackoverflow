@@ -34,5 +34,4 @@ object morcilla {
       game.schedule(tiempo * 9.5, { saltando = false })
     }
   }
-
 }
