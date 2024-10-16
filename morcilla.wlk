@@ -73,7 +73,7 @@ object morcilla {
 
   method posicionDeAtaque() {
     movimientoActivo = false
-    position = new MutablePosition (x=16, y=2)
+    position = new MutablePosition (x=17, y=2)
   }
 
   method activarMovimiento() {movimientoActivo = true}

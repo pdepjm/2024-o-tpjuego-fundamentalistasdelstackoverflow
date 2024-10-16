@@ -17,7 +17,7 @@ class Visual {
     const property image
 }
 
-const cartelAtaque = new Visual (position = new Position(x=10, y=20), image = "celda_gris.png")
+const cartelAtaque = new Visual (position = new Position(x=17, y=20), image = "celda_gris.png")
 
 
 // =============================================== BOSSFIGHTS ===============================================
@@ -79,4 +79,4 @@ class JefeInteractuable{
     }
 }
 
-const jefeDePrueba = new JefeInteractuable(position = new Position(x=16, y=2), image = "celda_roja.png")
+const jefeDePrueba = new JefeInteractuable(position = new Position(x=30, y=2), image = "celda_roja.png")
