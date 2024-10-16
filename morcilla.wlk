@@ -2,7 +2,7 @@ import wollok.game.*
 import general.*
 
 object morcilla {
-  var property position = new MutablePosition(x=0, y=2)
+  var property position = new PositionMejorada(x=0, y=2)
   var property vidas = 5
   var property puedeAtacar = false
 
@@ -16,7 +16,7 @@ object morcilla {
 
   method caminarDerecha(pasos) {
     if(movimientoActivo)
-      position.goRight(pasos)
+      position.goRightMejorado(pasos, 30)
 
     // FALTA EVALUAR SI QUEDA SUSPENDIDO
     self.caer()
@@ -24,7 +24,7 @@ object morcilla {
 
   method caminarIzquierda(pasos) {
     if(movimientoActivo)
-      position.goLeft(pasos)
+      position.goLeftMejorado(pasos, 0)
     
     // FALTA EVALUAR SI QUEDA SUSPENDIDO
     self.caer()
@@ -74,7 +74,7 @@ object morcilla {
 
   method posicionDeAtaque() {
     movimientoActivo = false
-    position = new MutablePosition (x=17, y=2)
+    position = new PositionMejorada (x=17, y=2)
   }
 
   method activarMovimiento() {movimientoActivo = true}

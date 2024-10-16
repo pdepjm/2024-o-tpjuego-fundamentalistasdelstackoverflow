@@ -14,17 +14,39 @@ class Colisiones {
     method image() = "celda_gris.png"
 }
 
-class Proyectiles inherits Colisiones {
+class Proyectiles {
+    var property position
+    const id
+
     method direccionIzquierda(velocidad) {
-        game.onTick(velocidad, "proyectilIzquierda", {position.x((position.x()-1))})
+        game.addVisual(self)
+        game.onTick(velocidad, "proyectilIzquierda" + id, {self.movimientoIzquierda(velocidad)})
+    }
+
+    method movimientoIzquierda(velocidad) {
+        position.goLeftMejorado(1, 0)    
+        if(position.x() == 0)
+        {
+            game.removeVisual(self)
+            game.removeTickEvent("proyectilIzquieda" + id)
+        }
     }
     
     method direccionDerecha(velocidad) {
-        game.onTick(velocidad, "proyectilDerecha", {position.goRight(1)})
+        game.addVisual(self)
+        game.onTick(velocidad, "proyectilDerecha" + id, {self.movimientoDerecha(velocidad)})
+    }
+
+    method movimientoDerecha(velocidad) {
+        position.goRightMejorado(1, 30)    
+        if(position.x() == 30)
+        {
+            game.removeVisual(self)
+            game.removeTickEvent("proyectilDerecha" + id)
+        }
     }
 }
 
-const colision0 = new Colisiones(position = new Position(x=0, y=1))
 
 
 // =============================================== VISUALES ===============================================
@@ -73,8 +95,7 @@ class BossFight {
     method etapaDefensa() {
         morcilla.activarMovimiento()
 
-        const duracionTurnoJefe = 15000
-        jefe.ataque()
+        const duracionTurnoJefe = jefe.ataque()
         game.schedule(duracionTurnoJefe, { self.habilitarAtaque() })
     }
 
@@ -108,19 +129,37 @@ class JefeDePrueba inherits JefeInteractuable {
         const opcion = (0.randomUpTo(2)).roundUp()
         
         if(opcion == 1)
-            self.ataque1()
+            return self.ataque1()
         else if(opcion == 2)
-            self.ataque2()
+            return self.ataque2()
+        else
+            return 0
 
     }
 
     method ataque1() {
-        new 
+        const proyectilR1 = new ProyectilJefe1(position = new PositionMejorada(x = 0, y = 2), id = "R1")
+        const proyectilL1 = new ProyectilJefe1(position = new PositionMejorada(x = 32, y = 3), id = "L1")
+
+        game.schedule(100, {proyectilR1.direccionDerecha(100)})
+        game.schedule(300, {proyectilL1.direccionIzquierda(100)})
+
+        return 6000
     }
 
     method ataque2() {
-        
+        const proyectilR1 = new ProyectilJefe1(position = new PositionMejorada(x = 0, y = 2), id = "R1")
+        const proyectilL1 = new ProyectilJefe1(position = new PositionMejorada(x = 32, y = 8), id = "L1")
+
+        game.schedule(300, {proyectilR1.direccionDerecha(100)})
+        game.schedule(100, {proyectilL1.direccionIzquierda(50)})
+
+        return 6000
     }
 }
 
-const jefeDePrueba = new JefeDePrueba (position = new Position(x=30, y=2), image = "celda_roja.png")
+class ProyectilJefe1 inherits Proyectiles {
+    method image() = "ataque_prueba.png"
+}
+
+const jefeDePrueba = new JefeDePrueba (position = new PositionMejorada(x=30, y=2), image = "celda_roja.png")
