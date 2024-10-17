@@ -19,6 +19,7 @@ class Proyectiles {
     const id
 
     method direccionIzquierda(velocidad) {
+        game.whenCollideDo(self, {=> morcilla.perderVida()})
         game.addVisual(self)
         game.onTick(velocidad, "proyectilIzquierda" + id, {self.movimientoIzquierda(velocidad)})
     }
@@ -33,6 +34,7 @@ class Proyectiles {
     }
     
     method direccionDerecha(velocidad) {
+        game.whenCollideDo(self, {=> morcilla.perderVida()})
         game.addVisual(self)
         game.onTick(velocidad, "proyectilDerecha" + id, {self.movimientoDerecha(velocidad)})
     }
