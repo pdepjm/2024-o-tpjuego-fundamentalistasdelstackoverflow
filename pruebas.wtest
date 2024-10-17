@@ -1,2 +1,12 @@
 import morcilla.*
 
+describe "Tests de morcilla" {
+
+  test "La vida de morcilla está entre los valores normales" {
+    assert.that(morcilla.vidas() > 0 || morcilla.derrotado())
+  }
+
+  test "Morcilla se suspende si está saltando" {
+    assert.that(!morcilla.suspendido() && !morcilla.saltando()) // Si morcilla no está suspendido, no puede estar saltando
+  }
+}

@@ -12,6 +12,7 @@ object morcilla {
     var movimientoActivo = true
 
     method saltando() = saltando
+    method suspendido() = suspendido
 
     method caminarDerecha(pasos) {
         if(movimientoActivo)
@@ -72,6 +73,7 @@ object morcilla {
     var property vidas = 5
     var inmunidadActiva = false
     var property puedeAtacar = false
+    var derrotado = false
 
     method perderVida() {
         vidas = (vidas-1).max(0)
@@ -89,8 +91,11 @@ object morcilla {
     }
 
     method derrota() {
+        derrotado = true
         game.say(self, "Ya perdí :(")
     }
+
+    method derrotado() = derrotado
 
     method atacar() {
         // Acá habría una animación, por ejemplo
