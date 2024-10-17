@@ -12,13 +12,15 @@ UTN - Facultad Regional Buenos Aires - Materia Paradigmas de Programación
 
 ## Capturas 
 
-![pepita](assets/golondrina.png)
+
 
 ## Reglas de Juego / Instrucciones
 
-(completar...)
+Morcilla debe derrotar distintos jefes.
 
 ## Controles:
 
-- `W` para...
+- `A` para moverse a la izquierda
+- `D` para moverse a la derecha
+- `ESPACIO` para saltar
 
