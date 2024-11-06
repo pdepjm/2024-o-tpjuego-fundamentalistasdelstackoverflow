@@ -19,7 +19,7 @@ class Proyectiles {
     const id
 
     method direccionIzquierda(velocidad) {
-        game.whenCollideDo(self, {=> morcilla.perderVida()})
+        game.onCollideDo(self, {elemento => elemento.perderVida()})
         game.addVisual(self)
         game.onTick(velocidad, "proyectilIzquierda" + id, {self.movimientoIzquierda(velocidad)})
     }
@@ -34,7 +34,7 @@ class Proyectiles {
     }
     
     method direccionDerecha(velocidad) {
-        game.whenCollideDo(self, {=> morcilla.perderVida()})
+        game.onCollideDo(self, {elemento => elemento.perderVida()})
         game.addVisual(self)
         game.onTick(velocidad, "proyectilDerecha" + id, {self.movimientoDerecha(velocidad)})
     }
@@ -47,6 +47,38 @@ class Proyectiles {
             game.removeTickEvent("proyectilDerecha" + id)
         }
     }
+
+    method direccionDiagonalAbajoDerecha(velocidad) {
+        game.onCollideDo(self, {elemento => elemento.perderVida()})
+        game.addVisual(self)
+        game.onTick(velocidad, "proyectilDiagonalAbajoDerecha" + id, {self.movimientoDiagonalAbajoDerecha(velocidad)})
+    }
+
+    method movimientoDiagonalAbajoDerecha(velocidad) {
+        position.goRightMejorado(1, 30)
+        position.goDownMejorado(1, 40)    
+        if(position.x() == 30)
+        {
+            game.removeVisual(self)
+            game.removeTickEvent("proyectilDiagonalAbajoDerecha" + id)
+        }
+    }
+
+    method direccionDiagonalAbajoIzquierda(velocidad) {
+        game.onCollideDo(self, {elemento => elemento.perderVida()})
+        game.addVisual(self)
+        game.onTick(velocidad, "proyectilDiagonalAbajoDerecha" + id, {self.movimientoDiagonalAbajoIzquierda(velocidad)})
+    }
+
+    method movimientoDiagonalAbajoIzquierda(velocidad) {
+        position.goLeftMejorado(1, 30)
+        position.goDownMejorado(1, 40)    
+        if(position.x() == 30)
+        {
+            game.removeVisual(self)
+            game.removeTickEvent("proyectilDiagonalAbajoIzquierda" + id)
+        }
+    }
 }
 
 
@@ -56,6 +88,8 @@ class Visual {
     const property position
     const property image
 }
+
+const derrota = new Visual (position = game.origin(), image = "celda_gris.png")
 
 const cartelAtaque = new Visual (position = new Position(x=17, y=20), image = "proto_cartel_ataque.png")
 
@@ -68,6 +102,7 @@ class BossFight {
         game.boardGround("arena_de_jefe.png")
         entorno.limpiarEntorno()
         game.addVisual(morcilla)
+        morcilla.enBatalla(true)
 
         jefe.posicionBatalla()
         game.addVisual(jefe)
@@ -102,7 +137,11 @@ class BossFight {
     }
 
     method finalizarBatalla() {
-
+        game.boardGround("stock_fondo.png")
+        entorno.limpiarEntorno()
+        game.addVisual(morcilla)
+        morcilla.enBatalla(false)
+        morcilla.activarMovimiento()  // habría que también tener seteado los lugares de el resto de npc en la zona 
     }
 }
 
@@ -164,4 +203,4 @@ class ProyectilJefe1 inherits Proyectiles {
     method image() = "ataque_prueba.png"
 }
 
-const jefeDePrueba = new JefeDePrueba (position = new PositionMejorada(x=30, y=2), image = "celda_roja.png")
+const jefeDePrueba = new JefeDePrueba (position = new PositionMejorada(x=10, y=2), image = "celda_roja.png")

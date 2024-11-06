@@ -1,5 +1,6 @@
 import wollok.game.*
 import general.*
+import entorno.*
 
 object morcilla {
     var property position = new PositionMejorada(x=0, y=2)
@@ -74,25 +75,39 @@ object morcilla {
     var inmunidadActiva = false
     var property puedeAtacar = false
     var derrotado = false
+    var enBatalla = false 
+
+    method enBatalla(estado){
+        enBatalla = estado
+    }
+
+    method iniciarPeleaMorcilla(){
+        if(!enBatalla){         // Un pequeño problema es que una vez que se activa el method podés activar la pelea en cualquier momento
+            game.say(self, "Pulsa J para iniciar battalla")
+            keyboard.j().onPressDo({ bossFightDePrueba.iniciarPelea() })
+        }
+    }
 
     method perderVida() {
-        vidas = (vidas-1).max(0)
-        game.say(self, "Ay!")
+        if (!inmunidadActiva){
+            vidas = (vidas-1).max(0)
+            game.say(self, "Ay!")
 
-        self.obtenerInmunidad(300)
+            self.obtenerInmunidad(300)
 
-        if(vidas < 1)
-            self.derrota()
+            if(vidas < 1)
+                self.derrota()
+        }
     }
 
     method obtenerInmunidad(duracion) {
         inmunidadActiva = true
-        game.schedule(100, {inmunidadActiva = false})
+        game.schedule(duracion, {inmunidadActiva = false})
     }
 
     method derrota() {
         derrotado = true
-        game.say(self, "Ya perdí :(")
+        game.addVisual(derrota)
     }
 
     method derrotado() = derrotado
@@ -103,7 +118,7 @@ object morcilla {
 
     method posicionDeAtaque() {
         movimientoActivo = false
-        position = new PositionMejorada (x=17, y=2)
+        position = new PositionMejorada (x=15, y=2)
     }
 
     method activarMovimiento() {
