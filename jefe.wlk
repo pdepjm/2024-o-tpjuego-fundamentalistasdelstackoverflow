@@ -9,10 +9,14 @@ class JefeInteractuable{
    const property image
    var property vida = 5
 
-   const posInicial = position
+   const posInicial = new PositionMejorada (x = position.x(), y = position.y())
 
    method posicionPrevia() {
-      position = posInicial
+        if(!self.derrotado())
+        {
+            position = posInicial
+            game.addVisual(self)
+        }
    }
 
    method posicionBatalla() {
@@ -72,12 +76,12 @@ class JefeGato inherits JefeInteractuable {
      method ataque() {
         const opcion = (0.randomUpTo(2)).roundUp()
         
-        //if(opcion == 1)
+        if(opcion == 1)
             return self.ataque1()
-        //else if(opcion == 2)
-            //return self.ataque2()
-        //else
-          //  return 0
+        else if(opcion == 2)
+            return self.ataque2()
+        else
+            return 0
     }
 
     method ataque1() {

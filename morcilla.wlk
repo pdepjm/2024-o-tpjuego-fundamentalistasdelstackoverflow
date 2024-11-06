@@ -163,7 +163,7 @@ object administradorVidas {
 
     const vidas = [vida1, vida2, vida3, vida4, vida5]
 
-    method definirVidas() {
+    method mostrarVidas() {
         vidas.forEach({sprite => if(sprite.id() <= vidaMaximaMorcilla){game.addVisual(sprite)}})
     }
 

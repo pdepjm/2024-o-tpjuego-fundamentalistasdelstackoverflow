@@ -16,7 +16,7 @@ program MorcillaGame {
 	game.addVisual(jefeGato)
 
 	game.addVisual(morcilla)
-	administradorVidas.definirVidas()
+	administradorVidas.mostrarVidas()
 
 	game.showAttributes(morcilla)
 	game.showAttributes(jefeGato)
@@ -27,8 +27,8 @@ program MorcillaGame {
 	keyboard.a().onPressDo({ morcilla.caminarIzquierda(1) })
 	keyboard.space().onPressDo({ morcilla.saltar(1000) })
 
-	game.whenCollideDo(jefeDePrueba, {personaje => personaje.iniciarPeleaMorcilla(jefeDePrueba)})
-	game.whenCollideDo(jefeGato, {personaje => personaje.iniciarPeleaMorcilla(jefeGato)})
+	game.whenCollideDo(jefeDePrueba, {personaje => if(personaje === morcilla){personaje.iniciarPeleaMorcilla(jefeDePrueba)}})
+	game.whenCollideDo(jefeGato, {personaje => if(personaje === morcilla){personaje.iniciarPeleaMorcilla(jefeGato)}})
 
 	game.start()
 }

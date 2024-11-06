@@ -6,6 +6,20 @@ import jefe.*
 object entorno {
     method limpiarEntorno() {
         game.allVisuals().forEach({visible => game.removeVisual(visible)})
+        administradorVidas.mostrarVidas()
+    }
+
+    method volverAlHub() {
+        const jefesHub = [jefeDePrueba, jefeGato]
+
+        game.allVisuals().forEach({visible => game.removeVisual(visible)})
+        administradorVidas.mostrarVidas()
+        
+        game.addVisual(morcilla)
+
+        jefesHub.forEach({jefe => jefe.posicionPrevia()})
+
+        // Comprobar si se derrotaron 2, que aparezca el malo malísimo
     }
 }
 
@@ -61,12 +75,15 @@ class BossFight {
             turnoMorcilla = false
             game.removeVisual(cartelAtaque)
 
-            const duracionCinematica = 2000
+            const duracionCinematica = 1500
             morcilla.atacar()
             jefe.disminuirVida()
 
             if(jefe.derrotado())
-                self.finalizarBatalla()
+            {
+                game.say(jefe, "ah la pucha")
+                game.schedule(1000, { self.finalizarBatalla() })
+            }
             else
                 game.schedule(duracionCinematica, { self.etapaDefensa() })
         }
@@ -76,19 +93,16 @@ class BossFight {
         morcilla.activarMovimiento()
 
         duracionTurnoJefe = jefe.ataque()
-        game.schedule(duracionTurnoJefe+100, { self.habilitarAtaque() })
+        game.schedule(duracionTurnoJefe+50, { self.habilitarAtaque() })
     }
 
     method finalizarBatalla() {
         jefeEnBatalla = false
         game.boardGround("stock_fondo2.png")
-        entorno.limpiarEntorno()
-        game.addVisual(morcilla)
+        entorno.volverAlHub()
+
         morcilla.enBatalla(false)
         morcilla.activarMovimiento()
-
-        jefe.posicionPrevia()
-        game.addVisual(jefe)
     }
 }
 
