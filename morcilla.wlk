@@ -1,6 +1,7 @@
 import wollok.game.*
 import general.*
 import entorno.*
+import jefe.*
 
 object morcilla {
     var property position = new PositionMejorada(x=0, y=2)
@@ -81,10 +82,11 @@ object morcilla {
         enBatalla = estado
     }
 
-    method iniciarPeleaMorcilla(){
+    method iniciarPeleaMorcilla(jefe){
         if(!enBatalla){         // Un pequeño problema es que una vez que se activa el method podés activar la pelea en cualquier momento
-            game.say(self, "Pulsa J para iniciar battalla")
-            keyboard.j().onPressDo({ bossFightDePrueba.iniciarPelea() })
+            game.say(jefe, "Pulsa J para iniciar battalla")
+
+            keyboard.j().onPressDo({ (new BossFight(jefe = jefe)).iniciarPelea() })
         }
     }
 

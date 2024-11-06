@@ -2,6 +2,8 @@ import wollok.game.*
 
 import morcilla.*
 import entorno.*
+import jefe.*
+import proyectiles.*
 
 program MorcillaGame {	
 	game.title("La Bizarra Aventura de MORCILLA")
@@ -19,7 +21,7 @@ program MorcillaGame {
 	keyboard.a().onPressDo({ morcilla.caminarIzquierda(1) })
 	keyboard.space().onPressDo({ morcilla.saltar(1000) })
 
-	game.onCollideDo(jefeDePrueba, {personaje => personaje.iniciarPeleaMorcilla()})
+	game.whenCollideDo(jefeDePrueba, {personaje => personaje.iniciarPeleaMorcilla(jefeDePrueba)})
 
 	game.start()
 }
