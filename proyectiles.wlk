@@ -1,9 +1,11 @@
+import morcilla.*
+
 class Proyectiles {
     var property position
     const id
 
     method direccionIzquierda(velocidad) {
-        game.onCollideDo(self, {elemento => elemento.perderVida()})
+        game.onCollideDo(self, {elemento => if(elemento === morcilla){elemento.perderVida()}})
         game.addVisual(self)
         game.onTick(velocidad, "proyectilIzquierda" + id, {self.movimientoIzquierda(velocidad)})
     }
@@ -18,7 +20,7 @@ class Proyectiles {
     }
     
     method direccionDerecha(velocidad) {
-        game.onCollideDo(self, {elemento => elemento.perderVida()})
+        game.onCollideDo(self, {elemento => if(elemento === morcilla){elemento.perderVida()}})
         game.addVisual(self)
         game.onTick(velocidad, "proyectilDerecha" + id, {self.movimientoDerecha(velocidad)})
     }
@@ -33,14 +35,14 @@ class Proyectiles {
     }
 
     method direccionDiagonalAbajoDerecha(velocidad) {
-        game.onCollideDo(self, {elemento => elemento.perderVida()})
+        game.onCollideDo(self, {elemento => if(elemento === morcilla){elemento.perderVida()}})
         game.addVisual(self)
         game.onTick(velocidad, "proyectilDiagonalAbajoDerecha" + id, {self.movimientoDiagonalAbajoDerecha(velocidad)})
     }
 
     method movimientoDiagonalAbajoDerecha(velocidad) {
         position.goRightMejorado(1, 30)
-        position.goDownMejorado(1, 40)    
+        position.goDownMejorado(1, 0)    
         if(position.x() == 30)
         {
             game.removeVisual(self)
@@ -49,18 +51,18 @@ class Proyectiles {
     }
 
     method direccionDiagonalAbajoIzquierda(velocidad) {
-        game.onCollideDo(self, {elemento => elemento.perderVida()})
+        game.onCollideDo(self, {elemento => if(elemento === morcilla){elemento.perderVida()}})
         game.addVisual(self)
         game.onTick(velocidad, "proyectilDiagonalAbajoDerecha" + id, {self.movimientoDiagonalAbajoIzquierda(velocidad)})
     }
 
     method movimientoDiagonalAbajoIzquierda(velocidad) {
-        position.goLeftMejorado(1, 30)
-        position.goDownMejorado(1, 40)    
-        if(position.x() == 30)
+        position.goLeftMejorado(1, 0)
+        position.goDownMejorado(1, 0)    
+        if(position.x() == 0)
         {
             game.removeVisual(self)
             game.removeTickEvent("proyectilDiagonalAbajoIzquierda" + id)
         }
     }
-}
+}  // revisar proyectiles en diagonal

@@ -4,7 +4,7 @@ import entorno.*
 import jefe.*
 
 object morcilla {
-    var property position = new PositionMejorada(x=0, y=2)
+    var property position = new PositionMejorada(x=15, y=2)
     method image() = "morcilla256.png"
 
     // ================================== MOVIMIENTO ================================== 
@@ -84,9 +84,11 @@ object morcilla {
 
     method iniciarPeleaMorcilla(jefe){
         if(!enBatalla){         // Un pequeño problema es que una vez que se activa el method podés activar la pelea en cualquier momento
-            game.say(jefe, "Pulsa J para iniciar battalla")
-
-            keyboard.j().onPressDo({ (new BossFight(jefe = jefe)).iniciarPelea() })
+            
+            self.desactivarMovimiento()
+            game.say(jefe, "Has llegado morcilla. Ahora nos vamos a agarrar")
+            
+            game.schedule(2000, new BossFight(jefe = jefe).iniciarPelea())
         }
     }
 
@@ -94,6 +96,8 @@ object morcilla {
         if (!inmunidadActiva){
             vidas = (vidas-1).max(0)
             game.say(self, "Ay!")
+
+            administradorVidas.actualizarVida(vidas)
 
             self.obtenerInmunidad(300)
 
@@ -119,11 +123,51 @@ object morcilla {
     }
 
     method posicionDeAtaque() {
+        self.desactivarMovimiento()
+        //position = new PositionMejorada (x=15, y=2)
+    }
+
+    method desactivarMovimiento() {
         movimientoActivo = false
-        position = new PositionMejorada (x=15, y=2)
     }
 
     method activarMovimiento() {
         movimientoActivo = true
+    }
+}
+
+class VidaMorcilla {
+    var property image = "vidaLlena.png" 
+    var property position
+    const id
+
+    method id() = id
+
+    method perderVida() {
+        image = "vidaVacia.png"
+    }
+
+    method tenerVida() {
+        image = "vidaLlena.png"
+    }
+}
+
+object administradorVidas {
+    const vidaMaximaMorcilla = morcilla.vidas()
+
+    const vida1 = new VidaMorcilla(position = new PositionMejorada(x = 1, y = 31), id = 1)
+    const vida2 = new VidaMorcilla(position = new PositionMejorada(x = 3, y = 31), id = 2)
+    const vida3 = new VidaMorcilla(position = new PositionMejorada(x = 5, y = 31), id = 3)
+    const vida4 = new VidaMorcilla(position = new PositionMejorada(x = 7, y = 31), id = 4)
+    const vida5 = new VidaMorcilla(position = new PositionMejorada(x = 9, y = 31), id = 5)
+
+    const vidas = [vida1, vida2, vida3, vida4, vida5]
+
+    method definirVidas() {
+        vidas.forEach({sprite => if(sprite.id() <= vidaMaximaMorcilla){game.addVisual(sprite)}})
+    }
+
+    method actualizarVida(vidaActual) {
+        vidas.forEach({sprite => if(sprite.id() > vidaActual){sprite.perderVida()}else{sprite.tenerVida()}})
     }
 }

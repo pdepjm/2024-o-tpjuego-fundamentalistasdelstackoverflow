@@ -29,6 +29,9 @@ const cartelAtaque = new Visual (position = new Position(x=17, y=20), image = "p
 // =============================================== BOSSFIGHTS ===============================================
 class BossFight {
     const property jefe
+    var duracionTurnoJefe = 6000 // default puesto por las dudas
+    var jefeEnBatalla = false
+    var turnoMorcilla = true
     
     method iniciarPelea() {
         if (!jefe.derrotado()) {
@@ -36,42 +39,49 @@ class BossFight {
             entorno.limpiarEntorno()
             game.addVisual(morcilla)
             morcilla.enBatalla(true)
+            jefeEnBatalla = true
 
             jefe.posicionBatalla()
             game.addVisual(jefe)
 
             self.habilitarAtaque()
+            keyboard.e().onPressDo({self.gestionarAtaque()})
         }
     }
 
     method habilitarAtaque() {
         morcilla.posicionDeAtaque()
         game.addVisual(cartelAtaque)
-        keyboard.e().onPressDo({self.gestionarAtaque()})
+        turnoMorcilla = true
     }
 
     method gestionarAtaque() {
-        game.removeVisual(cartelAtaque)
+        if(jefeEnBatalla && turnoMorcilla){
+            
+            turnoMorcilla = false
+            game.removeVisual(cartelAtaque)
 
-        const duracionCinematica = 2000
-        morcilla.atacar()
-        jefe.disminuirVida()
+            const duracionCinematica = 2000
+            morcilla.atacar()
+            jefe.disminuirVida()
 
-        if(jefe.derrotado())
-            self.finalizarBatalla()
-        else
-            game.schedule(duracionCinematica, { self.etapaDefensa() })
+            if(jefe.derrotado())
+                self.finalizarBatalla()
+            else
+                game.schedule(duracionCinematica, { self.etapaDefensa() })
+        }
     }
 
     method etapaDefensa() {
         morcilla.activarMovimiento()
 
-        const duracionTurnoJefe = jefe.ataque()
-        game.schedule(duracionTurnoJefe, { self.habilitarAtaque() })
+        duracionTurnoJefe = jefe.ataque()
+        game.schedule(duracionTurnoJefe+100, { self.habilitarAtaque() })
     }
 
     method finalizarBatalla() {
-        game.boardGround("stock_fondo.png")
+        jefeEnBatalla = false
+        game.boardGround("stock_fondo2.png")
         entorno.limpiarEntorno()
         game.addVisual(morcilla)
         morcilla.enBatalla(false)

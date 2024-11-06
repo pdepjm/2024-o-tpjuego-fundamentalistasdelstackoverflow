@@ -7,14 +7,20 @@ import proyectiles.*
 
 program MorcillaGame {	
 	game.title("La Bizarra Aventura de MORCILLA")
-	game.boardGround("stock_fondo.jpg")
+	game.boardGround("stock_fondo2.jpg")
 	game.height(32)
 	game.width(33)
 	game.cellSize(100)
 
 	game.addVisual(jefeDePrueba)
+	game.addVisual(jefeGato)
 
 	game.addVisual(morcilla)
+	administradorVidas.definirVidas()
+
+	game.showAttributes(morcilla)
+	game.showAttributes(jefeGato)
+	game.showAttributes(jefeDePrueba)
 
 	// Mover a morcilla
     keyboard.d().onPressDo({ morcilla.caminarDerecha(1) })
@@ -22,6 +28,7 @@ program MorcillaGame {
 	keyboard.space().onPressDo({ morcilla.saltar(1000) })
 
 	game.whenCollideDo(jefeDePrueba, {personaje => personaje.iniciarPeleaMorcilla(jefeDePrueba)})
+	game.whenCollideDo(jefeGato, {personaje => personaje.iniciarPeleaMorcilla(jefeGato)})
 
 	game.start()
 }
