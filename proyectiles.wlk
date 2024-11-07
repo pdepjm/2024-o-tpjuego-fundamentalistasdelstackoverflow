@@ -5,8 +5,7 @@ class Proyectiles {
     const id
 
     method direccionIzquierda(velocidad) {
-        game.onCollideDo(self, {elemento => if(elemento === morcilla){elemento.perderVida()}})
-        game.addVisual(self)
+        self.basicoDireccion()
         game.onTick(velocidad, "proyectilIzquierda" + id, {self.movimientoIzquierda(velocidad)})
     }
 
@@ -20,8 +19,7 @@ class Proyectiles {
     }
     
     method direccionDerecha(velocidad) {
-        game.onCollideDo(self, {elemento => if(elemento === morcilla){elemento.perderVida()}})
-        game.addVisual(self)
+        self.basicoDireccion()
         game.onTick(velocidad, "proyectilDerecha" + id, {self.movimientoDerecha(velocidad)})
     }
 
@@ -35,8 +33,7 @@ class Proyectiles {
     }
 
     method direccionDiagonalAbajoDerecha(velocidad) {
-        game.onCollideDo(self, {elemento => if(elemento === morcilla){elemento.perderVida()}})
-        game.addVisual(self)
+        self.basicoDireccion()
         game.onTick(velocidad, "proyectilDiagonalAbajoDerecha" + id, {self.movimientoDiagonalAbajoDerecha(velocidad)})
     }
 
@@ -51,8 +48,7 @@ class Proyectiles {
     }
 
     method direccionDiagonalAbajoIzquierda(velocidad) {
-        game.onCollideDo(self, {elemento => if(elemento === morcilla){elemento.perderVida()}})
-        game.addVisual(self)
+        self.basicoDireccion()
         game.onTick(velocidad, "proyectilDiagonalAbajoDerecha" + id, {self.movimientoDiagonalAbajoIzquierda(velocidad)})
     }
 
@@ -64,5 +60,10 @@ class Proyectiles {
             game.removeVisual(self)
             game.removeTickEvent("proyectilDiagonalAbajoIzquierda" + id)
         }
+    }
+
+    method basicoDireccion () {
+        game.onCollideDo(self, {elemento => if(elemento === morcilla){elemento.perderVida()}})
+        game.addVisual(self)
     }
 }  // revisar proyectiles en diagonal

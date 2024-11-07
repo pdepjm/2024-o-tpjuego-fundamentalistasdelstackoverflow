@@ -12,7 +12,7 @@ program MorcillaGame {
 	game.width(33)
 	game.cellSize(100)
 
-	game.addVisual(jefeDePrueba)
+	game.addVisual(jefePerro)
 	game.addVisual(jefeGato)
 
 	game.addVisual(morcilla)
@@ -20,15 +20,15 @@ program MorcillaGame {
 
 	game.showAttributes(morcilla)
 	game.showAttributes(jefeGato)
-	game.showAttributes(jefeDePrueba)
+	game.showAttributes(jefePerro)
 
 	// Mover a morcilla
     keyboard.d().onPressDo({ morcilla.caminarDerecha(1) })
 	keyboard.a().onPressDo({ morcilla.caminarIzquierda(1) })
 	keyboard.space().onPressDo({ morcilla.saltar(1000) })
 
-	game.whenCollideDo(jefeDePrueba, {personaje => if(personaje === morcilla){personaje.iniciarPeleaMorcilla(jefeDePrueba)}})
-	game.whenCollideDo(jefeGato, {personaje => if(personaje === morcilla){personaje.iniciarPeleaMorcilla(jefeGato)}})
+	game.whenCollideDo(jefePerro, {personaje => if(personaje === morcilla){personaje.iniciarPeleaMorcilla(jefePerro, 2000)}})
+	game.whenCollideDo(jefeGato, {personaje => if(personaje === morcilla){personaje.iniciarPeleaMorcilla(jefeGato, 2000)}})
 
 	game.start()
 }

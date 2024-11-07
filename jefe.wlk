@@ -3,11 +3,14 @@ import wollok.game.*
 import morcilla.*
 import general.*
 import proyectiles.*
+import ataques.*
 
-class JefeInteractuable{
+class Jefe {
    var property position
    const property image
-   var property vida = 5
+   var property vida
+   const property ataques
+   var bossfight = null
 
    const posInicial = new PositionMejorada (x = position.x(), y = position.y())
 
@@ -29,79 +32,22 @@ class JefeInteractuable{
    }
    
    method derrotado() = vida <= 0 
-}
 
-class JefeDePrueba inherits JefeInteractuable { 
-    method ataque() {
-        const opcion = (0.randomUpTo(2)).roundUp()
+   method ataque() {
+        // Resto 1 para que sea un valor de la lista
+        const ataque = (0.randomUpTo(ataques.size())).roundUp() - 1
         
-        if(opcion == 1)
-            return self.ataque1()
-        else if(opcion == 2)
-            return self.ataque2()
-        else
-            return 0
+        return ataques.get(ataque).atacar()
+   }
 
-    }
-
-    method ataque1() {
-        const proyectilR1 = new ProyectilJefe1(position = new PositionMejorada(x = 0, y = 2), id = "R1")
-        const proyectilL1 = new ProyectilJefe1(position = new PositionMejorada(x = 32, y = 3), id = "L1")
-
-        game.schedule(100, {proyectilR1.direccionDerecha(100)})
-        game.schedule(300, {proyectilL1.direccionIzquierda(100)})
-
-        return 6000
-    }
-
-    method ataque2() {
-        const proyectilR1 = new ProyectilJefe1(position = new PositionMejorada(x = 0, y = 2), id = "R1")
-        const proyectilL1 = new ProyectilJefe1(position = new PositionMejorada(x = 32, y = 8), id = "L1")
-
-        game.schedule(300, {proyectilR1.direccionDerecha(100)})
-        game.schedule(100, {proyectilL1.direccionIzquierda(50)})
-
-        return 6000
-    }
+   method nuevaPelea() {
+        bossfight = new BossFight (jefe = self)
+        bossfight.iniciarPelea()
+   }
 }
 
-class ProyectilJefe1 inherits Proyectiles {
-    method image() = "ataque_prueba.png"
-}
+const jefePerro = new Jefe (position = new PositionMejorada(x=3, y=2), vida = 3, image = "celda_roja.png", ataques = [ataquePerro1, ataquePerro2])
 
-const jefeDePrueba = new JefeDePrueba (position = new PositionMejorada(x=3, y=2), image = "celda_roja.png")
+const jefeGato = new Jefe (position = new PositionMejorada(x=27, y=2), vida = 3, image = "celda_gris.png", ataques = [ataqueGato1, ataqueGato2])
 
-class JefeGato inherits JefeInteractuable {
-
-     method ataque() {
-        const opcion = (0.randomUpTo(2)).roundUp()
-        
-        if(opcion == 1)
-            return self.ataque1()
-        else if(opcion == 2)
-            return self.ataque2()
-        else
-            return 0
-    }
-
-    method ataque1() {
-        const proyectilDR1 = new ProyectilJefe1(position = new PositionMejorada(x = 0, y = 30), id = "DR1")
-        const proyectilDL1 = new ProyectilJefe1(position = new PositionMejorada(x = 32, y = 27), id = "DL1")
-
-        game.schedule(100, {proyectilDR1.direccionDiagonalAbajoDerecha(100)})
-        game.schedule(300, {proyectilDL1.direccionDiagonalAbajoIzquierda(100)})
-
-        return 6000
-    }
-
-    method ataque2() {
-        const proyectilDR1 = new ProyectilJefe1(position = new PositionMejorada(x = 0, y = 27), id = "DR1")
-        const proyectilDL1 = new ProyectilJefe1(position = new PositionMejorada(x = 32, y = 32), id = "DL1")
-
-        game.schedule(300, {proyectilDR1.direccionDiagonalAbajoDerecha(100)})
-        game.schedule(100, {proyectilDL1.direccionDiagonalAbajoIzquierda(50)})
-
-        return 6000
-    }
-}
-const jefeGato = new JefeGato (position = new PositionMejorada(x=27, y=2), image = "celda_gris.png")
+const jefeFinal = new Jefe (position = new PositionMejorada (x = 15, y = 15), vida = 5, image = "morcilla256.png", ataques = [ataqueFinal1, ataqueFinal2])

@@ -2,24 +2,38 @@ import wollok.game.*
 import morcilla.*
 import general.*
 import jefe.*
+import ataques.*
 
 object entorno {
+    var jefesDerrotados = 0
+
+    method jefeDerrotado() { 
+        jefesDerrotados += 1
+    }
+
     method limpiarEntorno() {
         game.allVisuals().forEach({visible => game.removeVisual(visible)})
         administradorVidas.mostrarVidas()
     }
 
     method volverAlHub() {
-        const jefesHub = [jefeDePrueba, jefeGato]
+        const jefesHub = [jefePerro, jefeGato]
 
-        game.allVisuals().forEach({visible => game.removeVisual(visible)})
-        administradorVidas.mostrarVidas()
+        self.limpiarEntorno()
         
         game.addVisual(morcilla)
 
         jefesHub.forEach({jefe => jefe.posicionPrevia()})
 
-        // Comprobar si se derrotaron 2, que aparezca el malo malísimo
+        if (jefesDerrotados == jefesHub.size()) {
+            //game.schedule(1000, game.addVisual(jefeFinal))
+            //game.whenCollideDo(jefeFinal, { personaje => if(personaje === morcilla) {personaje.iniciarPeleaMorcilla(jefeFinal, 500)}})
+            game.schedule(1000, { morcilla.iniciarPeleaMorcilla(jefeFinal, 500) })
+        }
+
+        if (jefeFinal.derrotado()) {
+            new Cinematica (position = game.origin(), image = "celda_gris.png", frames = [], id = "FINAL").empezar()
+        }
     }
 }
 
@@ -32,7 +46,29 @@ class Colisiones {
 // =============================================== VISUALES ===============================================
 class Visual {
     const property position
-    const property image
+    var property image
+}
+
+class Cinematica inherits Visual {
+    const frames
+    const id
+    var frameActual = 0
+    
+    method empezar() {
+        image = frames.head()
+        const duracion = frames.size() * 100
+        game.onTick(100, id, {self.siguienteFrame()})
+        game.addVisual(self)  // arbitrario para saber si funciona
+
+        game.schedule(duracion, { game.removeTickEvent(id) })
+    }
+
+    method siguienteFrame() {
+        if(frameActual < frames.size()) {
+            frameActual += 1
+            image = frames.get(frameActual)
+        }
+    }
 }
 
 const derrota = new Visual (position = game.origin(), image = "celda_gris.png")
@@ -99,6 +135,7 @@ class BossFight {
     method finalizarBatalla() {
         jefeEnBatalla = false
         game.boardGround("stock_fondo2.png")
+        entorno.jefeDerrotado()
         entorno.volverAlHub()
 
         morcilla.enBatalla(false)

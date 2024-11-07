@@ -82,13 +82,12 @@ object morcilla {
         enBatalla = estado
     }
 
-    method iniciarPeleaMorcilla(jefe){
-        if(!enBatalla){         // Un pequeño problema es que una vez que se activa el method podés activar la pelea en cualquier momento
-            
+    method iniciarPeleaMorcilla(jefe, espera){
+        if(!enBatalla) {
             self.desactivarMovimiento()
             game.say(jefe, "Has llegado morcilla. Ahora nos vamos a agarrar")
             
-            game.schedule(2000, new BossFight(jefe = jefe).iniciarPelea())
+            game.schedule(espera, jefe.nuevaPelea())
         }
     }
 
