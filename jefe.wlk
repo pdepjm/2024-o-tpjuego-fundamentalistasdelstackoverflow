@@ -44,6 +44,12 @@ class Jefe {
         bossfight = new BossFight (jefe = self)
         bossfight.iniciarPelea()
    }
+
+   method tocaMorcilla() {
+        if(!self.derrotado()) {
+            morcilla.iniciarPeleaMorcilla(self, 2000)
+        }
+   }
 }
 
 const jefePerro = new Jefe (position = new PositionMejorada(x=3, y=2), vida = 3, image = "celda_roja.png", ataques = [ataquePerro1, ataquePerro2])

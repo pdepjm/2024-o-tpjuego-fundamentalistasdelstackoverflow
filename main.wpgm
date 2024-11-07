@@ -11,7 +11,7 @@ program MorcillaGame {
 	game.height(32)
 	game.width(33)
 	game.cellSize(100)
-
+	
 	game.addVisual(jefePerro)
 	game.addVisual(jefeGato)
 
@@ -27,8 +27,7 @@ program MorcillaGame {
 	keyboard.a().onPressDo({ morcilla.caminarIzquierda(1) })
 	keyboard.space().onPressDo({ morcilla.saltar(1000) })
 
-	game.whenCollideDo(jefePerro, {personaje => if(personaje === morcilla){personaje.iniciarPeleaMorcilla(jefePerro, 2000)}})
-	game.whenCollideDo(jefeGato, {personaje => if(personaje === morcilla){personaje.iniciarPeleaMorcilla(jefeGato, 2000)}})
+	game.whenCollideDo(morcilla, {elemento => elemento.tocaMorcilla()})
 
 	game.start()
 }

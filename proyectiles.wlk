@@ -63,7 +63,10 @@ class Proyectiles {
     }
 
     method basicoDireccion () {
-        game.onCollideDo(self, {elemento => if(elemento === morcilla){elemento.perderVida()}})
         game.addVisual(self)
+    }
+
+    method tocaMorcilla() {
+        morcilla.perderVida()
     }
 }  // revisar proyectiles en diagonal
