@@ -71,7 +71,7 @@ class Cinematica inherits Visual {
     }
 }
 
-const derrota = new Visual (position = game.origin(), image = "celda_gris.png")
+const derrota = new Visual (position = game.origin(), image = "261.jpg")
 
 const cartelAtaque = new Visual (position = new Position(x=17, y=20), image = "proto_cartel_ataque.png")
 
@@ -100,13 +100,16 @@ class BossFight {
     }
 
     method habilitarAtaque() {
-        morcilla.posicionDeAtaque()
-        game.addVisual(cartelAtaque)
-        turnoMorcilla = true
+        if(!morcilla.derrotado())
+        {
+            morcilla.posicionDeAtaque()
+            game.addVisual(cartelAtaque)
+            turnoMorcilla = true
+        }
     }
 
     method gestionarAtaque() {
-        if(jefeEnBatalla && turnoMorcilla){
+        if(jefeEnBatalla && turnoMorcilla && !morcilla.derrotado()){
             
             turnoMorcilla = false
             game.removeVisual(cartelAtaque)

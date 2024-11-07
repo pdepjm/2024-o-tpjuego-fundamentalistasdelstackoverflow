@@ -5,7 +5,7 @@ import jefe.*
 
 object morcilla {
     var property position = new PositionMejorada(x=15, y=2)
-    method image() = "morcilla256.png"
+    var property image = "morcilla256.png"
 
     // ================================== MOVIMIENTO ================================== 
     var saltando = false
@@ -72,7 +72,7 @@ object morcilla {
 
     // ================================== BATALLA ================================== 
 
-    var property vidas = 5
+    var property vidas = 3
     var inmunidadActiva = false
     var property puedeAtacar = false
     var derrotado = false
@@ -112,7 +112,8 @@ object morcilla {
 
     method derrota() {
         derrotado = true
-        game.addVisual(derrota)
+        image = "261.jpg"
+        self.desactivarMovimiento()
     }
 
     method derrotado() = derrotado
