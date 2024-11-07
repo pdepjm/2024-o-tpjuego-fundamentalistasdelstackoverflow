@@ -1,9 +1,12 @@
-import pepita.*
+import morcilla.*
 
-describe "group of tests for pepita" {
+describe "Tests de morcilla" {
 
-  test "pepita has initial energy" {
-    assert.equals(100, pepita.energy())
+  test "La vida de morcilla está entre los valores normales" {
+    assert.that(morcilla.vidas() > 0 || morcilla.derrotado())
   }
 
+  test "Morcilla se suspende si está saltando" {
+    assert.that(!morcilla.suspendido() && !morcilla.saltando()) // Si morcilla no está suspendido, no puede estar saltando
+  }
 }

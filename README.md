@@ -1,22 +1,26 @@
-#  (reemplazar nombre de juego acá) 
+#  La bizarra aventura de MORCILLA ૮・ﻌ・ა
 
 UTN - Facultad Regional Buenos Aires - Materia Paradigmas de Programación
 
 ## Equipo de desarrollo: 
 
-- completar...
-- completar...
+- Cochon, Bruno Xosé
+- Zárate, Juan Cruz
+- Oyero Pierri, Santino
+- Tapia, Luciano Ezequiel
  
 
 ## Capturas 
 
-![pepita](assets/golondrina.png)
+
 
 ## Reglas de Juego / Instrucciones
 
-(completar...)
+Morcilla debe derrotar distintos jefes.
 
 ## Controles:
 
-- `W` para...
+- `A` para moverse a la izquierda
+- `D` para moverse a la derecha
+- `ESPACIO` para saltar
 
