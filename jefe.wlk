@@ -24,6 +24,7 @@ class Jefe {
 
      method posicionBatalla() {
           position = game.center()
+          ataques.randomize()
      }
 
      method disminuirVida(){
@@ -33,19 +34,11 @@ class Jefe {
      method derrotado() = vida <= 0 
 
      method ataque() {
-          if(ataques.isEmpty())
-          {
-               return 100
-          }
-          else
-          {
-               ataques.randomize()
+          const ataqueActual =  ataques.head()
+          ataques.remove(ataqueActual)
+          ataques.add(ataqueActual)
 
-               const ataqueActual =  ataques.head()
-               ataques.drop(1)
-
-               return ataqueActual.atacar()
-          }
+          return ataqueActual.atacar()
      }
 
      method nuevaPelea() {
@@ -62,6 +55,6 @@ class Jefe {
 
 const jefePerro = new Jefe (position = new PositionMejorada(x=3, y=2), vida = 4, image = "perro0.png", ataques = [ataquePerro1, ataquePerro2, ataquePerro3, ataquePerro4])
 
-const jefeGato = new Jefe (position = new PositionMejorada(x=27, y=2), vida = 4, image = "gato0.png", ataques = [ataqueGato1, ataqueGato2, ataqueGato3, ataqueGato4])
+const jefeGato = new Jefe (position = new PositionMejorada(x=27, y=2), vida = 4, image = "gato0.png", ataques = [ataqueGato1, ataqueGato2, ataqueGato3])
 
 const jefeFinal = new Jefe (position = new PositionMejorada (x = 15, y = 15), vida = 5, image = "morcilla256.png", ataques = [ataqueFinal1, ataqueFinal2, ataqueFinal3, ataqueFinal4])
