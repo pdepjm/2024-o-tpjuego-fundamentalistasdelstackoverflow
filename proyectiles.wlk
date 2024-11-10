@@ -1,72 +1,52 @@
 import morcilla.*
 
-class Proyectiles {
+class Direccion {
+    const x
+    const y
+    const limiteIzq
+    const limiteDer
+
+    method x() = x
+    method y() = y
+    method limiteIzq() = limiteIzq
+    method limiteDer() = limiteDer
+}
+
+const dirIzquierda = new Direccion(x = -1, y = 0, limiteIzq = 0, limiteDer = 99)
+const dirDerecha = new Direccion(x = 1, y = 0, limiteIzq = -1, limiteDer = 32)
+const dirDiagonalIzquierda = new Direccion(x = -1, y = -1, limiteIzq = 0, limiteDer = 99)
+const dirDiagonalDerecha = new Direccion(x = 1, y = -1, limiteIzq = -1, limiteDer = 32)
+
+class Proyectil {
     var property position
     const id
+    const velocidad
+    const delay
+    const sentido
 
-    method direccionIzquierda(velocidad) {
-        self.basicoDireccion()
-        game.onTick(velocidad, "proyectilIzquierda" + id, {self.movimientoIzquierda(velocidad)})
-    }
+    method image() = "ataque_prueba.png"
 
-    method movimientoIzquierda(velocidad) {
-        position.goLeftMejorado(1, 0)    
-        if(position.x() == 0)
-        {
-            game.removeVisual(self)
-            game.removeTickEvent("proyectilIzquieda" + id)
-        }
-    }
-    
-    method direccionDerecha(velocidad) {
-        self.basicoDireccion()
-        game.onTick(velocidad, "proyectilDerecha" + id, {self.movimientoDerecha(velocidad)})
-    }
+    method delay() = delay
 
-    method movimientoDerecha(velocidad) {
-        position.goRightMejorado(1, 30)    
-        if(position.x() == 30)
-        {
-            game.removeVisual(self)
-            game.removeTickEvent("proyectilDerecha" + id)
-        }
-    }
+    method duracion() = delay + velocidad * 34
 
-    method direccionDiagonalAbajoDerecha(velocidad) {
-        self.basicoDireccion()
-        game.onTick(velocidad, "proyectilDiagonalAbajoDerecha" + id, {self.movimientoDiagonalAbajoDerecha(velocidad)})
-    }
-
-    method movimientoDiagonalAbajoDerecha(velocidad) {
-        position.goRightMejorado(1, 30)
-        position.goDownMejorado(1, 0)    
-        if(position.x() == 30)
-        {
-            game.removeVisual(self)
-            game.removeTickEvent("proyectilDiagonalAbajoDerecha" + id)
-        }
-    }
-
-    method direccionDiagonalAbajoIzquierda(velocidad) {
-        self.basicoDireccion()
-        game.onTick(velocidad, "proyectilDiagonalAbajoDerecha" + id, {self.movimientoDiagonalAbajoIzquierda(velocidad)})
-    }
-
-    method movimientoDiagonalAbajoIzquierda(velocidad) {
-        position.goLeftMejorado(1, 0)
-        position.goDownMejorado(1, 0)    
-        if(position.x() == 0)
-        {
-            game.removeVisual(self)
-            game.removeTickEvent("proyectilDiagonalAbajoIzquierda" + id)
-        }
-    }
-
-    method basicoDireccion () {
+    method direccion() {
         game.addVisual(self)
+        game.onTick(velocidad, "proyectil" + id, {self.movimiento()})
+    }
+
+    method movimiento() {
+        
+        position.horizontalMejorado(sentido.x(), sentido.limiteIzq(), sentido.limiteDer())
+        position.verticalMejorado(sentido.y(), 99, -1)
+        if(position.x() == sentido.limiteIzq() || position.x() == sentido.limiteDer())
+        {
+            game.removeVisual(self)
+            game.removeTickEvent("proyectil" + id)
+        }
     }
 
     method tocaMorcilla() {
         morcilla.perderVida()
     }
-}  // revisar proyectiles en diagonal
+}

@@ -7,7 +7,7 @@ import proyectiles.*
 
 program MorcillaGame {	
 	game.title("La Bizarra Aventura de MORCILLA")
-	game.boardGround("stock_fondo2.jpg")
+	game.boardGround("fondo.png")
 	game.height(32)
 	game.width(33)
 	game.cellSize(100)

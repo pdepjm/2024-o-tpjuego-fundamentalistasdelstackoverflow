@@ -5,16 +5,32 @@ import jefe.*
 
 object morcilla {
     var property position = new PositionMejorada(x=15, y=2)
-    var property image = "morcilla256.png"
 
     // ================================== MOVIMIENTO ================================== 
     var saltando = false
     var suspendido = false
     var caerActivo = false
     var movimientoActivo = true
+    
+    const framesSalto = ["morcilla1.png", "morcilla2.png", "morcilla3.png", "morcilla4.png", "morcilla5.png", "morcilla6.png"]
+    var frameSaltoActual = 0
 
     method saltando() = saltando
     method suspendido() = suspendido
+
+    method image() {
+        if(derrotado)
+            return "261.jpg"
+        else if(suspendido)
+            return framesSalto.get(frameSaltoActual)
+        else
+        {
+            if(position.x()%2 == 0)
+                return "morcilla0.png"
+            else
+                return "morcilla1.png"
+        }
+    }
 
     method caminarDerecha(pasos) {
         if(movimientoActivo)
@@ -44,6 +60,12 @@ object morcilla {
         game.schedule(tiempo * 3, { position.goUp(1) })
         game.schedule(tiempo * 4, { position.goUp(1) })
 
+        game.schedule(tiempo * 1.5, { frameSaltoActual = 1 })
+        game.schedule(tiempo * 3, { frameSaltoActual = 2 })
+        game.schedule(tiempo * 4.5, { frameSaltoActual = 3 })
+        game.schedule(tiempo * 6, { frameSaltoActual = 4 })
+        game.schedule(tiempo * 7.5, { frameSaltoActual = 5 })
+
         game.schedule(tiempo * 5, { saltando = false })
         game.schedule(tiempo * 5, { self.caer() })
         }
@@ -60,6 +82,7 @@ object morcilla {
         game.removeTickEvent("gravedad")
         suspendido = false
         caerActivo = false
+        frameSaltoActual = 0
         }
     }
 
@@ -110,9 +133,8 @@ object morcilla {
         game.schedule(duracion, {inmunidadActiva = false})
     }
 
-    method derrota() {
+    method derrota() {  // Terminar de hacer
         derrotado = true
-        image = "261.jpg"
         self.desactivarMovimiento()
     }
 
@@ -137,29 +159,29 @@ object morcilla {
 }
 
 class VidaMorcilla {
-    var property image = "vidaLlena.png" 
+    var property image = "vidaDoradaLlena.png" 
     var property position
     const id
 
     method id() = id
 
     method perderVida() {
-        image = "vidaVacia.png"
+        image = "vidaDoradaVacia.png"
     }
 
     method tenerVida() {
-        image = "vidaLlena.png"
+        image = "vidaDoradaLlena.png"
     }
 }
 
 object administradorVidas {
     const vidaMaximaMorcilla = morcilla.vidas()
 
-    const vida1 = new VidaMorcilla(position = new PositionMejorada(x = 1, y = 31), id = 1)
-    const vida2 = new VidaMorcilla(position = new PositionMejorada(x = 3, y = 31), id = 2)
-    const vida3 = new VidaMorcilla(position = new PositionMejorada(x = 5, y = 31), id = 3)
-    const vida4 = new VidaMorcilla(position = new PositionMejorada(x = 7, y = 31), id = 4)
-    const vida5 = new VidaMorcilla(position = new PositionMejorada(x = 9, y = 31), id = 5)
+    const vida1 = new VidaMorcilla(position = new PositionMejorada(x = 1, y = 29), id = 1)
+    const vida2 = new VidaMorcilla(position = new PositionMejorada(x = 4, y = 29), id = 2)
+    const vida3 = new VidaMorcilla(position = new PositionMejorada(x = 7, y = 29), id = 3)
+    const vida4 = new VidaMorcilla(position = new PositionMejorada(x = 10, y = 29), id = 4)
+    const vida5 = new VidaMorcilla(position = new PositionMejorada(x = 12, y = 29), id = 5)
 
     const vidas = [vida1, vida2, vida3, vida4, vida5]
 
