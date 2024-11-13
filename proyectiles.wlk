@@ -28,9 +28,9 @@ class Proyectil {
 
     method image() = "ataque_prueba.png"
 
-    method delay() = delay
+    method delay() = delay + 1000
 
-    method duracion() = delay + velocidad * 34
+    method duracion() = self.delay() + velocidad * 34
 
     method direccion() {
         position = new PositionMejorada(x = posicionInicial.x(), y = posicionInicial.y())

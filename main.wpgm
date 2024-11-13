@@ -26,6 +26,7 @@ program MorcillaGame {
     keyboard.d().onPressDo({ morcilla.caminarDerecha(1) })
 	keyboard.a().onPressDo({ morcilla.caminarIzquierda(1) })
 	keyboard.space().onPressDo({ morcilla.saltar(1000) })
+	keyboard.r().onPressDo({ entorno.reiniciarJuego() })
 
 	game.whenCollideDo(morcilla, {elemento => elemento.tocaMorcilla()})
 

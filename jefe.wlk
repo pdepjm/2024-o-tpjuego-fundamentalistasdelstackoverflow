@@ -13,7 +13,7 @@ class Jefe {
      var bossfight = null
 
      const posInicial = new PositionMejorada (x = position.x(), y = position.y())
-     const vidaInicial = vida
+     const vidaInicial = self.vida()
 
      method estadoInicial() {
         vida = vidaInicial

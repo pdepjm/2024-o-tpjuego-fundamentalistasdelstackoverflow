@@ -124,7 +124,7 @@ object morcilla {
 
             administradorVidas.actualizarVida(vidas)
 
-            self.obtenerInmunidad(300)
+            self.obtenerInmunidad(1000)
 
             if(vidas < 1)
                 self.derrota()
@@ -140,13 +140,13 @@ object morcilla {
         derrotado = true
         self.desactivarMovimiento()
 
-        cinematicaDerrota.empezar()
+        //cinematicaDerrota.empezar()
     }
 
     method derrotado() = derrotado
 
     method atacar() {
-        cinematicaAtaque.empezar()
+        //cinematicaAtaque.empezar()
     }
 
     method posicionDeAtaque() {

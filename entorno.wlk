@@ -37,11 +37,11 @@ object entorno {
     }
 
     method reiniciarJuego() {
-        const personajes = [morcilla, jefePerro, jefeGato, jefeFinal]
+        const personajes = [morcilla, jefePerro, jefeGato]
 
         self.limpiarEntorno()
 
-        personajes.forEach({personaje => personaje.estadoInicial()})
+        personajes.forEach({personaje => personaje.estadoInicial()}) // revisar
 
         game.addVisual(morcilla)
     }
@@ -73,7 +73,7 @@ class Cinematica {
         game.onTick(100, id, {self.siguienteFrame()})
         game.addVisual(self)  // arbitrario para saber si funciona
 
-        game.schedule(self.duracion(), { game.removeTickEvent(id) })
+        game.schedule(self.duracion() + 110, { game.removeTickEvent(id) })
     }
 
     method siguienteFrame() {
@@ -81,6 +81,10 @@ class Cinematica {
             frameActual += 1
             image = frames.get(frameActual)
         }
+        else {
+            frames.forEach({frame => game.removeVisual(frame)})
+        }
+
     }
     
     method duracion() = frames.size() * 100
@@ -88,11 +92,11 @@ class Cinematica {
 
 const cartelAtaque = new Visual (position = new Position(x=17, y=20), image = "proto_cartel_ataque.png")
 
-const cinematicaDerrota = new Cinematica (id = "derrota", frames = ["261.jpg"])
-const cinematicaAtaque = new Cinematica (id = "ataque", frames = ["261.jpg"])
-const cinematicaJefePerro = new Cinematica (id = "gato", frames = ["261.jpg"])
-const cinematicaJefeGato = new Cinematica (id = "perro", frames = ["261.jpg"])
-const cinematicaJefeFinal = new Cinematica (id = "final", frames = ["261.jpg"])
+//const cinematicaDerrota = new Cinematica (id = "derrota", frames = ["261.jpg"])
+//const cinematicaAtaque = new Cinematica (id = "ataque", frames = ["261.jpg"])
+//const cinematicaJefePerro = new Cinematica (id = "gato", frames = ["261.jpg"])
+//const cinematicaJefeGato = new Cinematica (id = "perro", frames = ["261.jpg"])
+//const cinematicaJefeFinal = new Cinematica (id = "final", frames = ["261.jpg"])
 
 
 // =============================================== BOSSFIGHTS ===============================================
@@ -133,7 +137,7 @@ class BossFight {
             turnoMorcilla = false
             game.removeVisual(cartelAtaque)
 
-            const duracionCinematica = cinematicaAtaque.duracion()
+            const duracionCinematica = 1000 // cinematicaAtaque.duracion()
             morcilla.atacar()
             jefe.disminuirVida()
 
