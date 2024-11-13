@@ -35,6 +35,16 @@ object entorno {
             new Cinematica (position = game.origin(), image = "celda_gris.png", frames = [], id = "FINAL").empezar()
         }
     }
+
+    method reiniciarJuego() {
+        const personajes = [morcilla, jefePerro, jefeGato, jefeFinal]
+
+        self.limpiarEntorno()
+
+        personajes.forEach({personaje => personaje.estadoInicial()})
+
+        game.addVisual(morcilla)
+    }
 }
 
 // =============================================== COLISIONES ===============================================

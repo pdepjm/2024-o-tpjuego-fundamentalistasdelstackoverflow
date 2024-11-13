@@ -13,6 +13,13 @@ class Jefe {
      var bossfight = null
 
      const posInicial = new PositionMejorada (x = position.x(), y = position.y())
+     const vidaInicial = vida
+
+     method estadoInicial() {
+        vida = vidaInicial
+        bossfight = null
+        self.posicionPrevia()
+     }
 
      method posicionPrevia() {
      if(!self.derrotado())

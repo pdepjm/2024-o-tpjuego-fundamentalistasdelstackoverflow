@@ -4,7 +4,8 @@ import entorno.*
 import jefe.*
 
 object morcilla {
-    var property position = new PositionMejorada(x=15, y=2)
+    var property position = self.posicionInicial()
+    const vidaInicial = 3
 
     // ================================== MOVIMIENTO ================================== 
     var saltando = false
@@ -14,6 +15,8 @@ object morcilla {
     
     const framesSalto = ["morcilla1.png", "morcilla2.png", "morcilla3.png", "morcilla4.png", "morcilla5.png", "morcilla6.png"]
     var frameSaltoActual = 0
+
+    method posicionInicial() = new PositionMejorada(x=15, y=2)
 
     method saltando() = saltando
     method suspendido() = suspendido
@@ -95,7 +98,7 @@ object morcilla {
 
     // ================================== BATALLA ================================== 
 
-    var property vidas = 3
+    var property vidas = vidaInicial
     var inmunidadActiva = false
     var property puedeAtacar = false
     var derrotado = false
@@ -157,6 +160,23 @@ object morcilla {
 
     method activarMovimiento() {
         movimientoActivo = true
+    }
+
+    method estadoInicial() {
+        position = self.posicionInicial()
+        
+        saltando = false
+        suspendido = false
+        caerActivo = false
+        movimientoActivo = true
+        
+        vidas = vidaInicial
+        inmunidadActiva = false
+        puedeAtacar = false
+        derrotado = false
+        enBatalla = false
+
+        administradorVidas.actualizarVida(vidas)
     }
 }
 
