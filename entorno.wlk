@@ -21,9 +21,9 @@ object entorno {
 
         self.limpiarEntorno()
         
-        game.addVisual(morcilla)
+        morcilla.mostrar()
 
-        jefesHub.forEach({jefe => jefe.posicionPrevia()})
+        jefesHub.forEach({jefe => if(!jefe.derrotado()){jefe.posicionPrevia()}})
 
         if (jefesDerrotados == jefesHub.size()) {
             //game.schedule(1000, game.addVisual(jefeFinal))
@@ -37,13 +37,16 @@ object entorno {
     }
 
     method reiniciarJuego() {
-        const personajes = [morcilla, jefePerro, jefeGato]
+        const personajes = [morcilla, jefePerro, jefeGato, jefeFinal]
+
+        jefesDerrotados = 0
 
         self.limpiarEntorno()
 
         personajes.forEach({personaje => personaje.estadoInicial()}) // revisar
 
-        game.addVisual(morcilla)
+        morcilla.mostrar()
+        game.schedule(200,{jefeFinal.ocultar()})
     }
 }
 
@@ -57,6 +60,16 @@ class Colisiones {
 class Visual {
     const property position
     var property image
+
+    method mostrar() {
+        if(!game.hasVisual(self))
+            game.addVisual(self)
+    }
+
+    method ocultar() {
+        if(game.hasVisual(self))
+            game.removeVisual(self)
+    }
 }
 
 class Cinematica {
@@ -65,38 +78,41 @@ class Cinematica {
     var frameActual = 0
     const property position = game.origin()
     var image = "261.jpg"
+    const duracionFrame = 200
 
     method image() = image
     
     method empezar() {
         image = frames.head()
-        game.onTick(100, id, {self.siguienteFrame()})
+        game.onTick(duracionFrame, id, {self.siguienteFrame()})
         game.addVisual(self)  // arbitrario para saber si funciona
 
-        game.schedule(self.duracion() + 110, { game.removeTickEvent(id) })
+        game.schedule(self.duracion(), { self.terminar() })
+    }
+
+    method terminar() {
+        game.removeTickEvent(id)
+        game.removeVisual(self)
     }
 
     method siguienteFrame() {
-        if(frameActual < frames.size()) {
+        if(frameActual +1 < frames.size()) {
             frameActual += 1
             image = frames.get(frameActual)
         }
-        else {
-            frames.forEach({frame => game.removeVisual(frame)})
-        }
-
     }
     
-    method duracion() = frames.size() * 100
+    method duracion() = frames.size() * duracionFrame
 }
 
 const cartelAtaque = new Visual (position = new Position(x=17, y=20), image = "proto_cartel_ataque.png")
+const fondoJefe = new Visual (position = game.origin(), image = "arena_de_jefe.png")
 
-//const cinematicaDerrota = new Cinematica (id = "derrota", frames = ["261.jpg"])
-//const cinematicaAtaque = new Cinematica (id = "ataque", frames = ["261.jpg"])
-//const cinematicaJefePerro = new Cinematica (id = "gato", frames = ["261.jpg"])
-//const cinematicaJefeGato = new Cinematica (id = "perro", frames = ["261.jpg"])
-//const cinematicaJefeFinal = new Cinematica (id = "final", frames = ["261.jpg"])
+const cinematicaDerrota = new Cinematica (id = "derrota", frames = ["261.jpg"])
+const cinematicaAtaque = new Cinematica (id = "ataque", frames = ["261.jpg"])
+const cinematicaJefePerro = new Cinematica (id = "gato", frames = ["261.jpg"])
+const cinematicaJefeGato = new Cinematica (id = "perro", frames = ["261.jpg"])
+const cinematicaJefeFinal = new Cinematica (id = "final", frames = ["261.jpg"])
 
 
 // =============================================== BOSSFIGHTS ===============================================
@@ -110,12 +126,12 @@ class BossFight {
         if (!jefe.derrotado()) {
             game.boardGround("arena_de_jefe.png")
             entorno.limpiarEntorno()
-            game.addVisual(morcilla)
+            morcilla.mostrar()
             morcilla.enBatalla(true)
             jefeEnBatalla = true
 
             jefe.posicionBatalla()
-            game.addVisual(jefe)
+            jefe.mostrar()
 
             self.habilitarAtaque()
             keyboard.e().onPressDo({self.gestionarAtaque()})
@@ -142,10 +158,7 @@ class BossFight {
             jefe.disminuirVida()
 
             if(jefe.derrotado())
-            {
-                game.say(jefe, "ah la pucha")
                 game.schedule(1000, { self.finalizarBatalla() })
-            }
             else
                 game.schedule(duracionCinematica, { self.etapaDefensa() })
         }

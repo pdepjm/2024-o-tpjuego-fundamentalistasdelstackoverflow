@@ -11,11 +11,17 @@ program MorcillaGame {
 	game.height(32)
 	game.width(33)
 	game.cellSize(100)
-	
-	game.addVisual(jefePerro)
-	game.addVisual(jefeGato)
 
-	game.addVisual(morcilla)
+	fondoJefe.mostrar()
+
+	keyboard.t().onPressDo({ fondoJefe.image("arena_de_jefe.png") })
+	keyboard.o().onPressDo({ fondoJefe.image("vacio.png") })
+	
+	jefePerro.mostrar()
+	jefeGato.mostrar()
+	
+
+	morcilla.mostrar()
 	administradorVidas.mostrarVidas()
 
 	game.showAttributes(morcilla)
@@ -26,7 +32,7 @@ program MorcillaGame {
     keyboard.d().onPressDo({ morcilla.caminarDerecha(1) })
 	keyboard.a().onPressDo({ morcilla.caminarIzquierda(1) })
 	keyboard.space().onPressDo({ morcilla.saltar(1000) })
-	keyboard.r().onPressDo({ entorno.reiniciarJuego() })
+	
 
 	game.whenCollideDo(morcilla, {elemento => elemento.tocaMorcilla()})
 

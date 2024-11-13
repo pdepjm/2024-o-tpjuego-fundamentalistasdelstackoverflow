@@ -2,10 +2,9 @@ import entorno.*
 import wollok.game.*
 import morcilla.*
 import general.*
-import proyectiles.*
 import ataques.*
 
-class Jefe {
+class Jefe inherits Personaje{
      var property position
      const property image
      var property vida
@@ -22,11 +21,8 @@ class Jefe {
      }
 
      method posicionPrevia() {
-     if(!self.derrotado())
-     {
           position = posInicial
-          game.addVisual(self)
-     }
+          self.mostrar()
      }
 
      method posicionBatalla() {
@@ -38,7 +34,7 @@ class Jefe {
           vida = (vida - 1).max(0)
      }
 
-     method derrotado() = vida <= 0 
+     method derrotado() = vida <= 0
 
      method ataque() {
           const ataqueActual =  ataques.head()

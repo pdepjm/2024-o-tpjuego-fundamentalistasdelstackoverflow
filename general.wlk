@@ -25,3 +25,15 @@ class PositionMejorada inherits MutablePosition {
         y = (y+pasos).min(limiteSup).max(limiteInf)
     }
 }
+
+class Personaje {
+    method mostrar() {
+        if(!game.hasVisual(self))
+            game.addVisual(self)
+    }
+
+    method ocultar() {
+        if(game.hasVisual(self))
+            game.removeVisual(self)
+    }
+}

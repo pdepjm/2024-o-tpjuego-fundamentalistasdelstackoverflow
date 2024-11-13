@@ -3,7 +3,7 @@ import general.*
 import entorno.*
 import jefe.*
 
-object morcilla {
+object morcilla inherits Personaje{
     var property position = self.posicionInicial()
     const vidaInicial = 3
 
@@ -22,16 +22,21 @@ object morcilla {
     method suspendido() = suspendido
 
     method image() {
+        
+        var imagen = ""
+        if(inmunidadActiva)
+            imagen = "INV"
+
         if(derrotado)
             return "261.jpg"
         else if(suspendido)
-            return framesSalto.get(frameSaltoActual)
+                return imagen+framesSalto.get(frameSaltoActual)
         else
         {
             if(position.x()%2 == 0)
-                return "morcilla0.png"
+                return imagen+"morcilla0.png"
             else
-                return "morcilla1.png"
+                return imagen+"morcilla1.png"
         }
     }
 
@@ -102,7 +107,7 @@ object morcilla {
     var inmunidadActiva = false
     var property puedeAtacar = false
     var derrotado = false
-    var enBatalla = false 
+    var enBatalla = false
 
     method enBatalla(estado){
         enBatalla = estado
@@ -111,7 +116,6 @@ object morcilla {
     method iniciarPeleaMorcilla(jefe, espera){
         if(!enBatalla) {
             self.desactivarMovimiento()
-            game.say(jefe, "Has llegado morcilla. Ahora nos vamos a agarrar")
             
             game.schedule(espera, jefe.nuevaPelea())
         }
@@ -120,7 +124,6 @@ object morcilla {
     method perderVida() {
         if (!inmunidadActiva){
             vidas = (vidas-1).max(0)
-            game.say(self, "Ay!")
 
             administradorVidas.actualizarVida(vidas)
 
@@ -136,17 +139,19 @@ object morcilla {
         game.schedule(duracion, {inmunidadActiva = false})
     }
 
-    method derrota() {  // Terminar de hacer
+    method derrota() {
         derrotado = true
         self.desactivarMovimiento()
 
-        //cinematicaDerrota.empezar()
+        cinematicaDerrota.empezar()
+
+        game.schedule(cinematicaDerrota.duracion()+200, {entorno.reiniciarJuego()})
     }
 
     method derrotado() = derrotado
 
     method atacar() {
-        //cinematicaAtaque.empezar()
+        cinematicaAtaque.empezar()
     }
 
     method posicionDeAtaque() {
