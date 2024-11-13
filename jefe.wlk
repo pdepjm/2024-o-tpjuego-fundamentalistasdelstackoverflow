@@ -6,13 +6,23 @@ import ataques.*
 
 class Jefe inherits Personaje{
      var property position
-     const property image
+     const idleFrames
+     var property image = idleFrames.head()
      var property vida
      const property ataques
      var bossfight = null
 
      const posInicial = new PositionMejorada (x = position.x(), y = position.y())
      const vidaInicial = self.vida()
+
+     method activarIdle() {
+          game.onTick(700,"idle"+idleFrames.head(), {self.idleAnimation()})
+     }
+
+     method idleAnimation() {
+          idleFrames.reverse()
+          image = idleFrames.head()
+     }
 
      method estadoInicial() {
         vida = vidaInicial
@@ -26,7 +36,7 @@ class Jefe inherits Personaje{
      }
 
      method posicionBatalla() {
-          position = game.center()
+          position = new PositionMejorada(x= 15, y=16)
           ataques.randomize()
      }
 
@@ -56,8 +66,8 @@ class Jefe inherits Personaje{
      }
 }
 
-const jefePerro = new Jefe (position = new PositionMejorada(x=3, y=2), vida = 4, image = "perro0.png", ataques = [ataquePerro1, ataquePerro2, ataquePerro3, ataquePerro4])
+const jefePerro = new Jefe (position = new PositionMejorada(x=3, y=2), vida = 4, idleFrames = ["perro0.png", "perro1.png"], ataques = [ataquePerro1, ataquePerro2, ataquePerro3, ataquePerro4])
 
-const jefeGato = new Jefe (position = new PositionMejorada(x=27, y=2), vida = 4, image = "gato0.png", ataques = [ataqueGato1, ataqueGato2, ataqueGato3])
+const jefeGato = new Jefe (position = new PositionMejorada(x=27, y=2), vida = 4, idleFrames = ["gato0.png", "gato1.png"], ataques = [ataqueGato1, ataqueGato2, ataqueGato3])
 
-const jefeFinal = new Jefe (position = new PositionMejorada (x = 15, y = 15), vida = 5, image = "morcilla256.png", ataques = [ataqueFinal1, ataqueFinal2, ataqueFinal3, ataqueFinal4])
+const jefeFinal = new Jefe (position = new PositionMejorada (x = 15, y = 15), vida = 5, idleFrames = ["morcilla0.png", "morcilla1.png"], ataques = [ataqueFinal1, ataqueFinal2, ataqueFinal3, ataqueFinal4])

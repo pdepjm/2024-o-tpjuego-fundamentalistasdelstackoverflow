@@ -41,19 +41,12 @@ object morcilla inherits Personaje{
         }
     }
 
-    method caminarDerecha(pasos) {
+    method caminar(pasos) {
         if(movimientoActivo)
-        position.goRightMejorado(pasos, 30)
+            position.horizontalMejorado(pasos, 1, 29)
 
-        // FALTA EVALUAR SI QUEDA SUSPENDIDO
-        self.caer()
-    }
+        sonidoVacio.play()
 
-    method caminarIzquierda(pasos) {
-        if(movimientoActivo)
-        position.goLeftMejorado(pasos, 0)
-        
-        // FALTA EVALUAR SI QUEDA SUSPENDIDO
         self.caer()
     }
 
@@ -133,6 +126,8 @@ object morcilla inherits Personaje{
         if (!inmunidadActiva){
             vidas = (vidas-1).max(0)
 
+            ladridosGolpe.play()
+
             administradorVidas.actualizarVida(vidas)
 
             self.obtenerInmunidad(1000)
@@ -160,6 +155,8 @@ object morcilla inherits Personaje{
 
     method atacar() {
         cinematicaAtaque.empezar()
+        ladridos.play()
+        position = self.posicionInicial()
     }
 
     method posicionDeAtaque() {
@@ -212,11 +209,11 @@ class VidaMorcilla {
 object administradorVidas {
     const vidaMaximaMorcilla = morcilla.vidas()
 
-    const vida1 = new VidaMorcilla(position = new PositionMejorada(x = 1, y = 29), id = 1)
-    const vida2 = new VidaMorcilla(position = new PositionMejorada(x = 4, y = 29), id = 2)
-    const vida3 = new VidaMorcilla(position = new PositionMejorada(x = 7, y = 29), id = 3)
-    const vida4 = new VidaMorcilla(position = new PositionMejorada(x = 10, y = 29), id = 4)
-    const vida5 = new VidaMorcilla(position = new PositionMejorada(x = 13, y = 29), id = 5)
+    const vida1 = new VidaMorcilla(position = new PositionMejorada(x = 2, y = 28), id = 1)
+    const vida2 = new VidaMorcilla(position = new PositionMejorada(x = 5, y = 28), id = 2)
+    const vida3 = new VidaMorcilla(position = new PositionMejorada(x = 8, y = 28), id = 3)
+    const vida4 = new VidaMorcilla(position = new PositionMejorada(x = 11, y = 28), id = 4)
+    const vida5 = new VidaMorcilla(position = new PositionMejorada(x = 14, y = 28), id = 5)
 
     const vidas = [vida1, vida2, vida3, vida4, vida5]
 

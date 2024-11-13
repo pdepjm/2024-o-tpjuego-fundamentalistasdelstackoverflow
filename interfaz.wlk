@@ -48,7 +48,7 @@ class Cinematica {
     method duracion() = frames.size() * duracionFrame
 }
 
-const cartelAtaque = new Visual (position = new Position(x=17, y=20), image = "proto_cartel_ataque.png")
+const cartelAtaque = new Visual (position = new Position(x=4, y=20), image = "cartelDeAtaque.jpg")
 
 object fondo inherits Visual(position = game.origin(), image = "vacio.png"){
     method fondoBatalla(){
@@ -58,6 +58,10 @@ object fondo inherits Visual(position = game.origin(), image = "vacio.png"){
     method fondoOriginal(){
         image = "vacio.png"
     }
+
+    method final(){
+        image = "morcillaAsadoFinal.jpg"
+    }
 }
 
 const cinematicaDerrota = new Cinematica (id = "derrota", duracionFrame = 300, frames = ["frameEjemplo0.jpg", "frameEjemplo1.jpg", "frameEjemplo2.jpg"])
@@ -65,18 +69,39 @@ const cinematicaAtaque = new Cinematica (id = "ataque", duracionFrame = 300, fra
 const cinematicaJefePerro = new Cinematica (id = "gato", duracionFrame = 300, frames = ["frameEjemplo0.jpg", "frameEjemplo1.jpg", "frameEjemplo2.jpg"])
 const cinematicaJefeGato = new Cinematica (id = "perro", duracionFrame = 300, frames = ["frameEjemplo0.jpg", "frameEjemplo1.jpg", "frameEjemplo2.jpg"])
 const cinematicaJefeFinal = new Cinematica (id = "final", duracionFrame = 300, frames = ["frameEjemplo0.jpg", "frameEjemplo1.jpg", "frameEjemplo2.jpg"])
-const cinematicaFinal = new Cinematica (id = "FINAL", duracionFrame = 300, frames = ["frameEjemplo0.jpg", "frameEjemplo1.jpg", "frameEjemplo2.jpg"])
 
 
 // =============================================== SONIDOS ===============================================
 
-// class Sonido {
-//     const sonido
-//     const 
+class Sonido {
+    const sonidos
+    const loop
+    var sonido = game.sound(sonidos.head())
+    var sonando = false
+    const volumen
 
-//     method play(){
-//         game.sound(sonido).play()
-//     }
+    method play(){
+        self.stop()
+        sonidos.randomize()
+        sonido = game.sound(sonidos.head())
+        sonido.volume(volumen)
+        sonido.shouldLoop(loop)
+        sonido.play()
 
+        if(loop)
+            sonando = true
+    }
 
-// }
+    method stop(){
+        if(sonando){
+            sonido.stop()
+            sonando = false
+        }
+    }
+}
+
+const ladridos = new Sonido(sonidos = ["ladrido0.mp3", "ladrido1.wav", "ladrido3.mp3", "ladrido4.mp3"], volumen = 0.6, loop = false)
+const ladridosGolpe = new Sonido(sonidos = ["ladridoGolpe0.wav", "ladridoGolpe1.wav", "ladridoGolpe2.wav", "ladridoGolpe3.wav"], volumen = 1, loop = false)
+const musicaBatalla = new Sonido(sonidos = ["morcillaBatalla.mp3"], volumen = 0.3, loop = true)
+const musicaNormal = new Sonido(sonidos = ["morcilla.mp3"], volumen = 0.3, loop = true)
+const sonidoVacio = new Sonido(sonidos = ["vacio.mp3"], volumen = 0, loop = false)

@@ -14,6 +14,8 @@ object entorno {
 
     method limpiarEntorno() {
         fondo.fondoOriginal()
+        musicaBatalla.stop()
+        musicaNormal.play()
         
         game.allVisuals().forEach({visible => game.removeVisual(visible)})
         fondo.mostrar()
@@ -36,7 +38,7 @@ object entorno {
         }
 
         if (jefeFinal.derrotado()) {
-            cinematicaFinal.empezar()
+            fondo.final()
         }
     }
 
@@ -72,6 +74,8 @@ class BossFight {
         if (!jefe.derrotado()) {
             entorno.limpiarEntorno()
             fondo.fondoBatalla()
+            musicaNormal.stop()
+            musicaBatalla.play()
             morcilla.mostrar()
             morcilla.enBatalla(true)
             jefeEnBatalla = true

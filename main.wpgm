@@ -17,19 +17,20 @@ program MorcillaGame {
 	
 	jefePerro.mostrar()
 	jefeGato.mostrar()
-	
+
+	jefePerro.activarIdle()
+	jefeGato.activarIdle()
 
 	morcilla.mostrar()
 	administradorVidas.mostrarVidas()
 
-	game.showAttributes(morcilla)
-	game.showAttributes(jefeGato)
-	game.showAttributes(jefePerro)
+	game.schedule(10, { musicaNormal.play() })
 
 	// Mover a morcilla
-    keyboard.d().onPressDo({ morcilla.caminarDerecha(1) })
-	keyboard.a().onPressDo({ morcilla.caminarIzquierda(1) })
+    keyboard.d().onPressDo({ morcilla.caminar(1) })
+	keyboard.a().onPressDo({ morcilla.caminar(-1) })
 	keyboard.space().onPressDo({ morcilla.saltar(1000) })
+	keyboard.f().onPressDo({ ladridos.play() })
 
 	morcilla.crearHitbox()
 
