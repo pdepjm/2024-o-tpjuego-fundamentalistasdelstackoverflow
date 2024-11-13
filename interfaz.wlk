@@ -64,11 +64,11 @@ object fondo inherits Visual(position = game.origin(), image = "vacio.png"){
     }
 }
 
-const cinematicaDerrota = new Cinematica (id = "derrota", duracionFrame = 300, frames = ["frameEjemplo0.jpg", "frameEjemplo1.jpg", "frameEjemplo2.jpg"])
-const cinematicaAtaque = new Cinematica (id = "ataque", duracionFrame = 300, frames = ["frameEjemplo0.jpg", "frameEjemplo1.jpg", "frameEjemplo2.jpg"])
-const cinematicaJefePerro = new Cinematica (id = "gato", duracionFrame = 300, frames = ["frameEjemplo0.jpg", "frameEjemplo1.jpg", "frameEjemplo2.jpg"])
-const cinematicaJefeGato = new Cinematica (id = "perro", duracionFrame = 300, frames = ["frameEjemplo0.jpg", "frameEjemplo1.jpg", "frameEjemplo2.jpg"])
-const cinematicaJefeFinal = new Cinematica (id = "final", duracionFrame = 300, frames = ["frameEjemplo0.jpg", "frameEjemplo1.jpg", "frameEjemplo2.jpg"])
+const cinematicaDerrota = new Cinematica (id = "derrota", duracionFrame = 800, frames = ["MUERTE1.jpg", "MUERTE1.jpg", "MUERTE2.jpg", "MUERTE3.jpg", "MUERTE4.jpg", "MUERTE5.jpg"])
+const cinematicaAtaque = new Cinematica (id = "ataque", duracionFrame = 800, frames = ["GOLPE1.jpg", "GOLPE2.jpg", "GOLPE3.jpg", "GOLPE4.jpg", "GOLPE5.jpg", "GOLPE6.jpg"])
+const cinematicaJefePerro = new Cinematica (id = "perro", duracionFrame = 3000, frames = ["PERRO1.jpg", "PERRO2.jpg", "PERRO3.jpg", "PERRO4.jpg"])
+const cinematicaJefeGato = new Cinematica (id = "gato", duracionFrame = 3000, frames = ["GATO1.jpg", "GATO2.jpg", "GATO3.jpg", "GATO4.JPG"])
+const cinematicaJefeFinal = new Cinematica (id = "final", duracionFrame = 3000, frames = ["frameEjemplo0.jpg", "frameEjemplo1.jpg", "frameEjemplo2.jpg"])
 
 
 // =============================================== SONIDOS ===============================================

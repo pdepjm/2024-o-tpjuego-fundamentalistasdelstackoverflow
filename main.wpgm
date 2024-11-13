@@ -30,7 +30,7 @@ program MorcillaGame {
     keyboard.d().onPressDo({ morcilla.caminar(1) })
 	keyboard.a().onPressDo({ morcilla.caminar(-1) })
 	keyboard.space().onPressDo({ morcilla.saltar(1000) })
-	keyboard.f().onPressDo({ ladridos.play() })
+	keyboard.f().onPressDo({ morcilla.ladrar() })
 
 	morcilla.crearHitbox()
 

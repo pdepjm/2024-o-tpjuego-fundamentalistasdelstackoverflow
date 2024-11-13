@@ -41,8 +41,8 @@ const proyectilL7 = new Proyectil(posicionInicial = new PositionMejorada(x = 32,
 const proyectilL8 = new Proyectil(posicionInicial = new PositionMejorada(x = 32, y = 4), id = "L8", velocidad = 100, delay = 300, sentido = dirIzquierda)
 const proyectilL9 = new Proyectil(posicionInicial = new PositionMejorada(x = 32, y = 5), id = "L9", velocidad = 100, delay = 300, sentido = dirIzquierda)
 
-const proyectilR10 = new Proyectil(posicionInicial = new PositionMejorada(x = 0, y = 2), id = "R10", velocidad = 100, delay = 1000, sentido = dirDerecha)
-const proyectilR11 = new Proyectil(posicionInicial = new PositionMejorada(x = 0, y = 7), id = "R11", velocidad = 100, delay = 1000, sentido = dirDerecha)
+const proyectilR10 = new Proyectil(posicionInicial = new PositionMejorada(x = 0, y = 2), id = "R10", velocidad = 150, delay = 1200, sentido = dirDerecha)
+const proyectilR11 = new Proyectil(posicionInicial = new PositionMejorada(x = 0, y = 7), id = "R11", velocidad = 150, delay = 1200, sentido = dirDerecha)
 
 class Ataque {
     const proyectiles

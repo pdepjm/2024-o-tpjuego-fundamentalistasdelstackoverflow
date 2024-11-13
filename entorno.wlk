@@ -43,16 +43,16 @@ object entorno {
     }
 
     method reiniciarJuego() {
-        const personajes = [morcilla, jefePerro, jefeGato, jefeFinal]
+        // const personajes = [morcilla, jefePerro, jefeGato, jefeFinal]
 
-        jefesDerrotados = 0
+        // jefesDerrotados = 0
 
-        self.limpiarEntorno()
+        // self.limpiarEntorno()
 
-        personajes.forEach({personaje => personaje.estadoInicial()}) // revisar
+        // personajes.forEach({personaje => personaje.estadoInicial()}) // revisar
 
-        morcilla.mostrar()
-        game.schedule(200,{jefeFinal.ocultar()})
+        // morcilla.mostrar()
+        // game.schedule(200,{jefeFinal.ocultar()})
     }
 }
 

@@ -188,6 +188,10 @@ object morcilla inherits Personaje{
 
         administradorVidas.actualizarVida(vidas)
     }
+
+    method ladrar() {
+        ladridos.play()
+    }
 }
 
 class VidaMorcilla {
@@ -242,4 +246,4 @@ class Hitbox {
 const hitboxMorcilla0 = new Hitbox(desvioX = 0, desvioY = 0) 
 const hitboxMorcilla1 = new Hitbox(desvioX = 0, desvioY = 1) 
 const hitboxMorcilla2 = new Hitbox(desvioX = 1, desvioY = 0) 
-const hitboxMorcilla3 = new Hitbox(desvioX = 1, desvioY = 1) 
+const hitboxMorcilla3 = new Hitbox(desvioX = 1, desvioY = 1)
