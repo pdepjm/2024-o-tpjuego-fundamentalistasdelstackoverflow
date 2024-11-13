@@ -3,6 +3,7 @@ import morcilla.*
 import general.*
 import jefe.*
 import ataques.*
+import interfaz.*
 
 object entorno {
     var jefesDerrotados = 0
@@ -12,7 +13,10 @@ object entorno {
     }
 
     method limpiarEntorno() {
+        fondo.fondoOriginal()
+        
         game.allVisuals().forEach({visible => game.removeVisual(visible)})
+        fondo.mostrar()
         administradorVidas.mostrarVidas()
     }
 
@@ -32,7 +36,7 @@ object entorno {
         }
 
         if (jefeFinal.derrotado()) {
-            new Cinematica (position = game.origin(), image = "celda_gris.png", frames = [], id = "FINAL").empezar()
+            cinematicaFinal.empezar()
         }
     }
 
@@ -56,64 +60,6 @@ class Colisiones {
     method image() = "celda_gris.png"
 }
 
-// =============================================== VISUALES ===============================================
-class Visual {
-    const property position
-    var property image
-
-    method mostrar() {
-        if(!game.hasVisual(self))
-            game.addVisual(self)
-    }
-
-    method ocultar() {
-        if(game.hasVisual(self))
-            game.removeVisual(self)
-    }
-}
-
-class Cinematica {
-    const frames
-    const id
-    var frameActual = 0
-    const property position = game.origin()
-    var image = "261.jpg"
-    const duracionFrame = 200
-
-    method image() = image
-    
-    method empezar() {
-        image = frames.head()
-        game.onTick(duracionFrame, id, {self.siguienteFrame()})
-        game.addVisual(self)  // arbitrario para saber si funciona
-
-        game.schedule(self.duracion(), { self.terminar() })
-    }
-
-    method terminar() {
-        game.removeTickEvent(id)
-        game.removeVisual(self)
-    }
-
-    method siguienteFrame() {
-        if(frameActual +1 < frames.size()) {
-            frameActual += 1
-            image = frames.get(frameActual)
-        }
-    }
-    
-    method duracion() = frames.size() * duracionFrame
-}
-
-const cartelAtaque = new Visual (position = new Position(x=17, y=20), image = "proto_cartel_ataque.png")
-const fondoJefe = new Visual (position = game.origin(), image = "arena_de_jefe.png")
-
-const cinematicaDerrota = new Cinematica (id = "derrota", frames = ["261.jpg"])
-const cinematicaAtaque = new Cinematica (id = "ataque", frames = ["261.jpg"])
-const cinematicaJefePerro = new Cinematica (id = "gato", frames = ["261.jpg"])
-const cinematicaJefeGato = new Cinematica (id = "perro", frames = ["261.jpg"])
-const cinematicaJefeFinal = new Cinematica (id = "final", frames = ["261.jpg"])
-
 
 // =============================================== BOSSFIGHTS ===============================================
 class BossFight {
@@ -124,8 +70,8 @@ class BossFight {
     
     method iniciarPelea() {
         if (!jefe.derrotado()) {
-            game.boardGround("arena_de_jefe.png")
             entorno.limpiarEntorno()
+            fondo.fondoBatalla()
             morcilla.mostrar()
             morcilla.enBatalla(true)
             jefeEnBatalla = true
@@ -173,7 +119,6 @@ class BossFight {
 
     method finalizarBatalla() {
         jefeEnBatalla = false
-        game.boardGround("stock_fondo2.png")
         entorno.jefeDerrotado()
         entorno.volverAlHub()
 

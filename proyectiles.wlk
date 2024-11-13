@@ -26,7 +26,7 @@ class Proyectil {
     const delay
     const sentido
 
-    method image() = "ataque_prueba.png"
+    method image() = "miniMiniHueso.png"
 
     method delay() = delay + 1000
 
@@ -40,7 +40,7 @@ class Proyectil {
 
     method movimiento() {
         position.horizontalMejorado(sentido.x(), sentido.limiteIzq(), sentido.limiteDer())
-        position.verticalMejorado(sentido.y(), 99, -1)
+        position.verticalMejorado(sentido.y(), 99, -4)
         if(position.x() == sentido.limiteIzq() || position.x() == sentido.limiteDer())
         {
             game.removeVisual(self)

@@ -41,7 +41,8 @@ const proyectilL7 = new Proyectil(posicionInicial = new PositionMejorada(x = 32,
 const proyectilL8 = new Proyectil(posicionInicial = new PositionMejorada(x = 32, y = 4), id = "L8", velocidad = 100, delay = 300, sentido = dirIzquierda)
 const proyectilL9 = new Proyectil(posicionInicial = new PositionMejorada(x = 32, y = 5), id = "L9", velocidad = 100, delay = 300, sentido = dirIzquierda)
 
-
+const proyectilR10 = new Proyectil(posicionInicial = new PositionMejorada(x = 0, y = 2), id = "R10", velocidad = 100, delay = 1000, sentido = dirDerecha)
+const proyectilR11 = new Proyectil(posicionInicial = new PositionMejorada(x = 0, y = 7), id = "R11", velocidad = 100, delay = 1000, sentido = dirDerecha)
 
 class Ataque {
     const proyectiles
@@ -62,7 +63,7 @@ const ataqueGato1 = new Ataque(proyectiles = [proyectilDR1, proyectilDR2, proyec
 const ataqueGato2 = new Ataque(proyectiles = [proyectilDR3, proyectilDR4, proyectilDR5, proyectilDR6, proyectilDR7])
 const ataqueGato3 = new Ataque(proyectiles = [proyectilDL3, proyectilDL4, proyectilDL5, proyectilDL6, proyectilDL7])
 
-const ataqueFinal1 = new Ataque(proyectiles = [proyectilR1, proyectilR2, proyectilL1, proyectilL2, proyectilDR1, proyectilDR2, proyectilDL1, proyectilDL2])
+const ataqueFinal1 = new Ataque(proyectiles = [proyectilR1, proyectilL1, proyectilDR1, proyectilDR2, proyectilDL1, proyectilDL2])
 const ataqueFinal2 = new Ataque(proyectiles = [proyectilDR3, proyectilDR4, proyectilDR5, proyectilDR6, proyectilDR7, proyectilL1, proyectilR1])
 const ataqueFinal3 = new Ataque(proyectiles = [proyectilDL3, proyectilDL4, proyectilDL5, proyectilDL6, proyectilDL7, proyectilR3, proyectilR4, proyectilR8, proyectilR9])
-const ataqueFinal4 = new Ataque(proyectiles = [proyectilL6, proyectilL7, proyectilL8, proyectilL9, proyectilR1, proyectilR2])
+const ataqueFinal4 = new Ataque(proyectiles = [proyectilL6, proyectilL7, proyectilL8, proyectilL9, proyectilR10, proyectilR11])

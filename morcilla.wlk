@@ -2,10 +2,11 @@ import wollok.game.*
 import general.*
 import entorno.*
 import jefe.*
+import interfaz.*
 
 object morcilla inherits Personaje{
     var property position = self.posicionInicial()
-    const vidaInicial = 3
+    const vidaInicial = 5
 
     // ================================== MOVIMIENTO ================================== 
     var saltando = false
@@ -113,6 +114,13 @@ object morcilla inherits Personaje{
         enBatalla = estado
     }
 
+    method crearHitbox() {
+        const hitbox = [hitboxMorcilla0, hitboxMorcilla1, hitboxMorcilla2, hitboxMorcilla3]
+        hitbox.forEach({hitbox => hitbox.inicializar()})
+    }
+
+    method tocaMorcilla() {}
+
     method iniciarPeleaMorcilla(jefe, espera){
         if(!enBatalla) {
             self.desactivarMovimiento()
@@ -208,7 +216,7 @@ object administradorVidas {
     const vida2 = new VidaMorcilla(position = new PositionMejorada(x = 4, y = 29), id = 2)
     const vida3 = new VidaMorcilla(position = new PositionMejorada(x = 7, y = 29), id = 3)
     const vida4 = new VidaMorcilla(position = new PositionMejorada(x = 10, y = 29), id = 4)
-    const vida5 = new VidaMorcilla(position = new PositionMejorada(x = 12, y = 29), id = 5)
+    const vida5 = new VidaMorcilla(position = new PositionMejorada(x = 13, y = 29), id = 5)
 
     const vidas = [vida1, vida2, vida3, vida4, vida5]
 
@@ -220,3 +228,21 @@ object administradorVidas {
         vidas.forEach({sprite => if(sprite.id() > vidaActual){sprite.perderVida()}else{sprite.tenerVida()}})
     }
 }
+
+class Hitbox {
+    const desvioY
+    const desvioX
+    
+    method image() = "vacio.png"
+
+    method position() = new PositionMejorada(x = morcilla.position().x() + desvioX, y = morcilla.position().y() + desvioY)
+
+    method inicializar() { 
+        game.whenCollideDo(self, {elemento => elemento.tocaMorcilla()})
+    }
+}
+
+const hitboxMorcilla0 = new Hitbox(desvioX = 0, desvioY = 0) 
+const hitboxMorcilla1 = new Hitbox(desvioX = 0, desvioY = 1) 
+const hitboxMorcilla2 = new Hitbox(desvioX = 1, desvioY = 0) 
+const hitboxMorcilla3 = new Hitbox(desvioX = 1, desvioY = 1) 

@@ -4,6 +4,7 @@ import morcilla.*
 import entorno.*
 import jefe.*
 import proyectiles.*
+import interfaz.*
 
 program MorcillaGame {	
 	game.title("La Bizarra Aventura de MORCILLA")
@@ -12,10 +13,7 @@ program MorcillaGame {
 	game.width(33)
 	game.cellSize(100)
 
-	fondoJefe.mostrar()
-
-	keyboard.t().onPressDo({ fondoJefe.image("arena_de_jefe.png") })
-	keyboard.o().onPressDo({ fondoJefe.image("vacio.png") })
+	fondo.mostrar()
 	
 	jefePerro.mostrar()
 	jefeGato.mostrar()
@@ -32,9 +30,8 @@ program MorcillaGame {
     keyboard.d().onPressDo({ morcilla.caminarDerecha(1) })
 	keyboard.a().onPressDo({ morcilla.caminarIzquierda(1) })
 	keyboard.space().onPressDo({ morcilla.saltar(1000) })
-	
 
-	game.whenCollideDo(morcilla, {elemento => elemento.tocaMorcilla()})
+	morcilla.crearHitbox()
 
 	game.start()
 }
