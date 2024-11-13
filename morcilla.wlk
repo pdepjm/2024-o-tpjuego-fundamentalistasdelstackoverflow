@@ -136,12 +136,14 @@ object morcilla {
     method derrota() {  // Terminar de hacer
         derrotado = true
         self.desactivarMovimiento()
+
+        cinematicaDerrota.empezar()
     }
 
     method derrotado() = derrotado
 
     method atacar() {
-        // Acá habría una animación, por ejemplo
+        cinematicaAtaque.empezar()
     }
 
     method posicionDeAtaque() {

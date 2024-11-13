@@ -49,18 +49,21 @@ class Visual {
     var property image
 }
 
-class Cinematica inherits Visual {
+class Cinematica {
     const frames
     const id
     var frameActual = 0
+    const property position = game.origin()
+    var image = "261.jpg"
+
+    method image() = image
     
     method empezar() {
         image = frames.head()
-        const duracion = frames.size() * 100
         game.onTick(100, id, {self.siguienteFrame()})
         game.addVisual(self)  // arbitrario para saber si funciona
 
-        game.schedule(duracion, { game.removeTickEvent(id) })
+        game.schedule(self.duracion(), { game.removeTickEvent(id) })
     }
 
     method siguienteFrame() {
@@ -69,11 +72,17 @@ class Cinematica inherits Visual {
             image = frames.get(frameActual)
         }
     }
+    
+    method duracion() = frames.size() * 100
 }
 
-const derrota = new Visual (position = game.origin(), image = "261.jpg")
-
 const cartelAtaque = new Visual (position = new Position(x=17, y=20), image = "proto_cartel_ataque.png")
+
+const cinematicaDerrota = new Cinematica (id = "derrota", frames = ["261.jpg"])
+const cinematicaAtaque = new Cinematica (id = "ataque", frames = ["261.jpg"])
+const cinematicaJefePerro = new Cinematica (id = "gato", frames = ["261.jpg"])
+const cinematicaJefeGato = new Cinematica (id = "perro", frames = ["261.jpg"])
+const cinematicaJefeFinal = new Cinematica (id = "final", frames = ["261.jpg"])
 
 
 // =============================================== BOSSFIGHTS ===============================================
@@ -114,7 +123,7 @@ class BossFight {
             turnoMorcilla = false
             game.removeVisual(cartelAtaque)
 
-            const duracionCinematica = 1500
+            const duracionCinematica = cinematicaAtaque.duracion()
             morcilla.atacar()
             jefe.disminuirVida()
 
