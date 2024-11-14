@@ -103,12 +103,15 @@ object morcilla inherits Personaje{
     var derrotado = false
     var enBatalla = false
 
+    method vidaInicial() = vidaInicial
+
     method enBatalla(estado){
         enBatalla = estado
     }
 
+    const hitbox = [hitboxMorcilla0, hitboxMorcilla1, hitboxMorcilla2, hitboxMorcilla3]
+    
     method crearHitbox() {
-        const hitbox = [hitboxMorcilla0, hitboxMorcilla1, hitboxMorcilla2, hitboxMorcilla3]
         hitbox.forEach({hitbox => hitbox.inicializar()})
     }
 
@@ -192,6 +195,13 @@ object morcilla inherits Personaje{
     method ladrar() {
         ladridos.play()
     }
+
+    override method mostrar() {
+        if(!game.hasVisual(self)){
+            game.addVisual(self)
+            hitbox.forEach({box => game.addVisual(box)})
+        }
+    }
 }
 
 class VidaMorcilla {
@@ -238,7 +248,7 @@ class Hitbox {
 
     method position() = new PositionMejorada(x = morcilla.position().x() + desvioX, y = morcilla.position().y() + desvioY)
 
-    method inicializar() { 
+    method inicializar() {
         game.whenCollideDo(self, {elemento => elemento.tocaMorcilla()})
     }
 }

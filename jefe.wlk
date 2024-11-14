@@ -3,6 +3,7 @@ import wollok.game.*
 import morcilla.*
 import general.*
 import ataques.*
+import interfaz.*
 
 class Jefe inherits Personaje{
      var property position
@@ -11,6 +12,8 @@ class Jefe inherits Personaje{
      var property vida
      const property ataques
      var bossfight = null
+     const property cinematica
+     var property atacado = false
 
      const posInicial = new PositionMejorada (x = position.x(), y = position.y())
      const vidaInicial = self.vida()
@@ -19,9 +22,15 @@ class Jefe inherits Personaje{
           game.onTick(700,"idle"+idleFrames.head(), {self.idleAnimation()})
      }
 
+     var frameActual = 0
+
      method idleAnimation() {
-          idleFrames.reverse()
-          image = idleFrames.head()
+          var prefix = ""
+          if(atacado)
+               prefix = "INV"
+          
+          image = prefix + idleFrames.get(frameActual%idleFrames.size())
+          frameActual +=1
      }
 
      method estadoInicial() {
@@ -38,9 +47,12 @@ class Jefe inherits Personaje{
      method posicionBatalla() {
           position = new PositionMejorada(x= 15, y=16)
           ataques.randomize()
+          cinematica.empezar()
      }
 
      method disminuirVida(){
+          ladridosJefe.play()
+          atacado = true
           vida = (vida - 1).max(0)
      }
 
@@ -66,8 +78,8 @@ class Jefe inherits Personaje{
      }
 }
 
-const jefePerro = new Jefe (position = new PositionMejorada(x=3, y=2), vida = 4, idleFrames = ["perro0.png", "perro1.png"], ataques = [ataquePerro1, ataquePerro2, ataquePerro3, ataquePerro4])
+const jefePerro = new Jefe (position = new PositionMejorada(x=3, y=2), vida = 4, idleFrames = ["perro0.png", "perro1.png"], ataques = [ataquePerro1, ataquePerro2, ataquePerro3, ataquePerro4], cinematica = cinematicaJefePerro)
 
-const jefeGato = new Jefe (position = new PositionMejorada(x=27, y=2), vida = 4, idleFrames = ["gato0.png", "gato1.png"], ataques = [ataqueGato1, ataqueGato2, ataqueGato3])
+const jefeGato = new Jefe (position = new PositionMejorada(x=27, y=2), vida = 4, idleFrames = ["gato0.png", "gato1.png"], ataques = [ataqueGato1, ataqueGato2, ataqueGato3], cinematica = cinematicaJefeGato)
 
-const jefeFinal = new Jefe (position = new PositionMejorada (x = 15, y = 15), vida = 5, idleFrames = ["morcilla0.png", "morcilla1.png"], ataques = [ataqueFinal1, ataqueFinal2, ataqueFinal3, ataqueFinal4])
+const jefeFinal = new Jefe (position = new PositionMejorada (x = 15, y = 15), vida = 5, idleFrames = ["amalgama0.png", "amalgama1.png"], ataques = [ataqueFinal1, ataqueFinal2, ataqueFinal3, ataqueFinal4], cinematica = cinematicaJefeFinal)

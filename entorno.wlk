@@ -35,6 +35,7 @@ object entorno {
             //game.schedule(1000, game.addVisual(jefeFinal))
             //game.whenCollideDo(jefeFinal, { personaje => if(personaje === morcilla) {personaje.iniciarPeleaMorcilla(jefeFinal, 500)}})
             game.schedule(1000, { morcilla.iniciarPeleaMorcilla(jefeFinal, 500) })
+            jefeFinal.activarIdle()
         }
 
         if (jefeFinal.derrotado()) {
@@ -80,15 +81,16 @@ class BossFight {
             morcilla.enBatalla(true)
             jefeEnBatalla = true
 
-            jefe.posicionBatalla()
             jefe.mostrar()
+            jefe.posicionBatalla()
 
-            self.habilitarAtaque()
-            keyboard.e().onPressDo({self.gestionarAtaque()})
+            game.schedule(jefe.cinematica().duracion()+200,{self.habilitarAtaque()})
+            
         }
     }
 
     method habilitarAtaque() {
+        keyboard.e().onPressDo({self.gestionarAtaque()})
         if(!morcilla.derrotado())
         {
             morcilla.posicionDeAtaque()
@@ -103,18 +105,25 @@ class BossFight {
             turnoMorcilla = false
             game.removeVisual(cartelAtaque)
 
-            const duracionCinematica = 1000 // cinematicaAtaque.duracion()
+            const duracionCinematica = cinematicaAtaque.duracion()
             morcilla.atacar()
-            jefe.disminuirVida()
 
-            if(jefe.derrotado())
-                game.schedule(1000, { self.finalizarBatalla() })
-            else
-                game.schedule(duracionCinematica, { self.etapaDefensa() })
+            game.schedule(duracionCinematica, { self.golpearJefe() })
         }
     }
 
+    method golpearJefe() {
+        jefe.disminuirVida()
+        if(jefe.derrotado()) {
+            game.schedule(1500, { jefe.ocultar() })
+            game.schedule(3000, { self.finalizarBatalla() })
+        }
+        else
+            game.schedule(500, { self.etapaDefensa() })
+    }
+
     method etapaDefensa() {
+        jefe.atacado(false)
         morcilla.activarMovimiento()
 
         duracionTurnoJefe = jefe.ataque()
