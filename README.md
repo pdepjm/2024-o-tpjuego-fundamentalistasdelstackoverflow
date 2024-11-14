@@ -41,7 +41,8 @@ Morcilla está en problemas!!! Un gato y un perro muy malos le impiden disfrutar
 
 ![DERROTA](https://github.com/user-attachments/assets/fc89fc21-7bfc-4112-a514-43d124f69294)
 
-
+## Música
+[OST](https://youtu.be/uviYiDG_0J0?si=CHlKJ6qIezTSiG3O)
 
 Agradecimiento especial a Dante Alvarez por las ilustraciones y cinemáticas
 
