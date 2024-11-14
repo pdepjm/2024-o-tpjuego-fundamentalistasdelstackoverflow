@@ -4,8 +4,8 @@ Nuestro juega cuenta con un protagonista característico: el perro Morcilla.
 
 Por sobre la interacción de Morcilla con el entorno, existe también complejidad en el funcionamiento interno de Morcilla y su movimiento controlado por el usuario.
 
-El movimiento de Morcilla controlado por el usuario se limita a 3 acciones: caminar a la izquierda, caminar a la derecha y saltar
-Es mejor empezar por el salto, que es el más complejo y añade complejidad a los otros dos.
+El movimiento de Morcilla controlado por el usuario se limita a 2 acciones: caminar horizontalmente (a izquierda o derecha) y saltar
+Es mejor empezar por el salto, que es el más complejo y añade complejidad al primero.
 Para controlar el salto como un movimiento en dos direcciones (primero sube y luego baja), pudimos haberlo resuelto con un movimiento progresivo hacia arriba y una caída retrasada un tiempo proporcional a la distancia subida. 
 Esto habría funcionado perfecto para dar la impresión de salto, siempre y cuando morcilla siempre se mantenga en una misma distancia respecto al suelo.
 El problema es que preferimos contemplar la posibilidad de implementar plataformas en el juego, por lo que este mecanismo de salto traería problemas si Morcilla necesitara caer más distancia que la altura que se elevó.
@@ -37,7 +37,7 @@ Pero la activación múltiple de este método resulta en una aplicación de la g
 La acción onTick "gravedad" se desactiva una vez Morcilla ya cayó (momentáneamente es cuando alcanza el suelo, pero luego podrá ampliarse a cuando alcance cualquier plataforma)
 
 Los movimientos a izquierda y derecha son sencillos, excepto por la necesidad de fijar fronteras a izquierda y derecha donde detener el movimiento. 
-Debido a la necesidad reiterada de realizar esto, decidimos ampliar la clase ***PositionMutable*** de wollok game para crear una clase ***PositionMejorada*** que hereda la clase anterior pero añada métodos de movimiento limitado.
+Debido a la necesidad reiterada de realizar esto, decidimos ampliar la clase ***PositionMutable*** de wollok game para crear una clase ***PositionMejorada*** que hereda la clase anterior pero añade métodos de movimiento limitado.
 Por ejemplo:
 ```
   method goLeftMejorado(pasos, limite) {
@@ -49,7 +49,7 @@ Por ejemplo:
 El juego consiste en diversas pelesa contra jefes (bossfights) configuradas por turnos: un turno de ataque y un turno de defensa o evación de proyectiles.
 
 ### Etapa de ATAQUE
-Durante el turno de ataque creimos conveniente que Morcilla se coloque en el medio de la pantalla y el jugador no pueda controlar su movimiento, para conseguir una suerte de animación (aun no implementada) de ataque.
+Durante el turno de ataque creimos conveniente que Morcilla quede inmovil y el jugador no pueda controlar su movimiento. El ataque se demuestra al jugador con una cinemática (el funcionamiento de las cinemáticas se explicará más adelante).
 Para esto Morcilla cuenta con la *flag* ***movimientoActivo***, que es desactivada cuando Morcilla se sitúa en posición de ataque y es reactivada cuando comienza el turno de defensa. 
 Estos llamados son realizados por el objeto correspondiente de la clase ***BossFight*** mediante la interfaz *habilitarAtaque( )*
 
@@ -63,14 +63,42 @@ Ahora el usuario vuelve a tomar control del movimiento de Morcilla y el jefe en 
 
 ![morcilla clases drawio (4)](https://github.com/user-attachments/assets/c2c3110d-60d2-46af-a727-dd88b26b7e44)
 
-Los proyectiles (específicos para cada jefe para distinguir el *sprite* que llevan) son instanciados por los jefes desde distintas posiciones y envíados a moverse en distintas direcciones.
+Los proyectiles cuentan con atributos como sentido (dirección y límites), velocidad, retraso (hasta dispararse), posición inicial e id identificatorio. El movimiento de los proyectiles funciona mediante los siguientes métodos:
 ```
-  method direccionIzquierda(velocidad) {
-      game.whenCollideDo(self, {=> morcilla.perderVida()})
-      game.addVisual(self)
-      game.onTick(velocidad, "proyectilIzquierda" + id, {self.movimientoIzquierda(velocidad)})
-  }
+    method direccion() {
+        position = new PositionMejorada(x = posicionInicial.x(), y = posicionInicial.y())
+        game.addVisual(self)
+        game.onTick(velocidad, "proyectil" + id, {self.movimiento()})
+    }
+
+    method movimiento() {
+        position.horizontalMejorado(sentido.x(), sentido.limiteIzq(), sentido.limiteDer())
+        position.verticalMejorado(sentido.y(), 99, -4)
+        if(position.x() == sentido.limiteIzq() || position.x() == sentido.limiteDer())
+        {
+            game.removeVisual(self)
+            game.removeTickEvent("proyectil" + id)
+        }
+    }
 ```
-Cuentan con un id identificatorio ya que su movimiento es definido con una acción *onTick* que deberá llevar un nombre identificatorio que permita cancelarla al llegar al final de la pantalla. 
-La existencia de varios proyectiles de la misma clase simultánteamente resulta en la creación de múltiples acciones de movimiento para cada proyectil, que de no ser distinguidas por un nombre distinto, generaría que se cancelen la una a la otra de manera indeterminada. 
-Junto con su movimiento, los proyectiles evaluarán que, de colisionar con Morcilla, deben hacerle **perderVida( )**.
+
+El id identificatorio permite identificar la acción *onTick* que los hace moverse y así cancelarla al llegar al final de la pantalla. La existencia de varios proyectiles de la misma clase simultánteamente resulta en la creación de múltiples acciones de movimiento para cada proyectil, que de no ser distinguidas por un nombre distinto, generaría que se cancelen la una a la otra de manera indeterminada. 
+Junto con su movimiento, los proyectiles evaluarán que, de colisionar con Morcilla, deben hacerle **perderVida( )** (esto se verá más a detalle cuando veamos las hitbox de Morcilla).
+
+Los proyectiles, además, se agrupan en objetos llamados *Ataque*. En definitiva, un ataque es una combinación predeterminada de proyectiles que lanzará un jefe durante su turno de ataque. Los jefes poseen una lista de ataques que se randomizará con cada turno para que, al aplicar el ataque en la cabeza de la lista, el jefe pueda atacar efectivamente en patrones aleatorios (dentro de sus combinaciones de proyectiles predefinidas en cada ataque).
+
+## Morcilla - Hitbox
+Según Wikipedia, una caja de colisión (*hitbox*) es una *"técnica invisible comúnmente utilizada en los videojuegos para la detección de colisiones en tiempo real"*. En nuestro caso, las dimensiones visuales de nuestro personaje Morcilla (256x256 píxeles) no coinciden con las dimensiones máximas admitidas para una celda en Wollok (100x100 píxeles). El resultado de esto es que los métodos de *onCollideDo* y *whenCollideDo* no pudieran ser tan precisos como nos gustaría para determinar contacto entre Morcilla y los proyectiles, empeorando la experiencia y el desafío de esquivar ataques. La solución a ello fue crear objetos invisibles (con imágenes completamente transparentes) que devolvieran como posición propia una posición relativa a la de Morcilla. Así, estos 4 objetos que funcionan como *Hitbox* remplazan a Morcilla en los metodos de colisión y permiten que los proyectiles impacten más precisamente y con más fidelidad a lo que ve el jugador en pantalla. El funcionamiento principal de las hitbox se resume en el siguiente código:
+```
+    method position() = new PositionMejorada(x = morcilla.position().x() + desvioX, y = morcilla.position().y() + desvioY)
+
+    method inicializar() {
+        game.whenCollideDo(self, {elemento => elemento.tocaMorcilla()})
+    }
+```
+
+## Jefes
+
+## Cinemáticas
+
+## Polimorfismo
