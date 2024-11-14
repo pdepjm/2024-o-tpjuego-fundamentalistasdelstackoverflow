@@ -61,7 +61,7 @@ La etapa de ataque finaliza cuando el usuario presiona la tecla indicada en pant
 Como ya fue mencionado, esta etapa es el turno de ataque del jefe enemigo, donde el jugador deberá esquivar proyectiles dirigidos hacia Morcilla. Morcilla cuenta con un número finito de vidas que determinarán cuando el jugador es derrotado.
 Ahora el usuario vuelve a tomar control del movimiento de Morcilla y el jefe en cuestión ejecuta una de sus secuencias de ataque. La clase más interesante de esta etapa son los ***Proyectiles***.
 
-![morcilla clases drawio (4)](https://github.com/user-attachments/assets/c2c3110d-60d2-46af-a727-dd88b26b7e44)
+![morcilla clases drawio (1)](https://github.com/user-attachments/assets/7bfbae9a-7c0e-4a4d-9157-d387d6c06a7d)
 
 Los proyectiles cuentan con atributos como sentido (dirección y límites), velocidad, retraso (hasta dispararse), posición inicial e id identificatorio. El movimiento de los proyectiles funciona mediante los siguientes métodos:
 ```
@@ -98,7 +98,35 @@ Según Wikipedia, una caja de colisión (*hitbox*) es una *"técnica invisible c
 ```
 
 ## Jefes
+Los jefes existen y varían su comportamiento en dos escenarios distintos dentro del juego: antes de la batalla y durante la batalla. Junto con los proyectiles, los jefes son los otros objetos que actúan frente a una colisión con Morcilla, aprovechando un polimorfismo con esta otra clase mediante el método *tocaMorcilla()*. Cada jefe tiene además asignada una cinemática que comenzará cuando inicie la batalla. Las batallas son instancias de la clase *Bossfight* que son creadas por cada jefe con la llamada del método *nuevaPelea()*. La funcionalidad del jefe durante la batalla reside en su comportamiento visual, la gestión de su vida y el llamado a sus ataques en cuanto el objeto de *Bossfight* lo ordene. La *Bossfight*, en cambio, es quien dirige los turnos de la batalla y habilita a Morcilla y a cada Jefe para atacar respectivamente.
 
 ## Cinemáticas
+Para el funcionamiento de las cinemáticas creamos una clase *Cinematica* que aprovecha un listado de frames y el método *onTick* provisto por wollok game para avanzar por la lista. Las animaciones pueden ser de loop infinito (animación de derrota) o finitas. La lógica dentro de la clase es la siguiente:
+
+```
+    method empezar() {
+        image = frames.head()
+        game.onTick(duracionFrame, id, {self.siguienteFrame()})
+        game.addVisual(self)  // arbitrario para saber si funciona
+
+        if(!loop)
+            game.schedule(self.duracion(), { self.terminar() })
+    }
+
+    method terminar() {
+        game.removeTickEvent(id)
+        game.removeVisual(self)
+        frameActual = 0
+    }
+
+    method siguienteFrame() {
+        if((loop || (frameActual+1 < frames.size()))) {
+            frameActual += 1
+            image = frames.get(frameActual%frames.size())
+        }
+    }
+```
 
 ## Polimorfismo
+El polimorfismo presente a lo largo del código se percibe principalmente en el uso de clases y múltiples instancias así como *clases hijas* que comparten métodos con sus *padres* e incluso a veces los sobreescriben. Por ejemplo, tanto los jefes como Morcilla heredan la clase *Personaje*, la cual creamos para facilitar métodos relacionados con mostrar y ocultar las visuales de los personajes. En el caso de Morcilla, es necesario junto con la imagen propia, añadir las visuales de su hitbox para el correcto funcionamiento de las colisiones, por lo que el polimorfismo mediante el llamado *mostrar()* y *ocultar()*, difiere con el resto de personajes (los jefes).
+También existe polimorfismo, por ejemplo, en las colisiones con Morcilla. Como ya se explicó anteriormente, el método *tocaMorcilla()* es común a todos los objetos que pueden entrar en contacto con Morcilla, pero cada uno actúa de una manera distina: los proyectiles restan vida a Morcilla, los jefes comienzan su batalla mediante el contacto y la hitbox no hace nada (una de las hitbox específicamente está constantemente en contacto con Morcilla).
