@@ -1,16 +1,38 @@
 import wollok.game.*
 
-import pepita.*
+import morcilla.*
+import entorno.*
+import jefe.*
+import proyectiles.*
+import interfaz.*
 
-program PepitaGame {
-	game.title("Pepita")
-	game.height(10)
-	game.width(10)
+program MorcillaGame {	
+	game.title("La Bizarra Aventura de MORCILLA")
+	game.boardGround("fondo.png")
+	game.height(32)
+	game.width(33)
 	game.cellSize(100)
 
-	game.addVisual(pepita)
+	fondo.mostrar()
+	
+	jefePerro.mostrar()
+	jefeGato.mostrar()
 
-	keyboard.w().onPressDo({ pepita.fly(1) })
+	jefePerro.activarIdle()
+	jefeGato.activarIdle()
+
+	morcilla.mostrar()
+	administradorVidas.mostrarVidas()
+
+	game.schedule(10, { musicaNormal.play() })
+
+	// Mover a morcilla
+    keyboard.d().onPressDo({ morcilla.caminar(1) })
+	keyboard.a().onPressDo({ morcilla.caminar(-1) })
+	keyboard.space().onPressDo({ morcilla.saltar(1000) })
+	keyboard.f().onPressDo({ morcilla.ladrar() })
+
+	morcilla.crearHitbox()
 
 	game.start()
 }
